@@ -1,0 +1,14 @@
+#ifndef CUB3D_H
+# define CUB3D_H
+
+# include "libft.h"
+# include "minilibx-linux/mlx.h"
+# include <errno.h>
+# include <fcnlt.h>
+# include <limits.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
+
+#endif
