@@ -1,7 +1,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../Version so_long/Libft/libft.h"
+# include "../Libft/libft.h"
 // # include "../minilibx-linux/mlx.h"
 # include <errno.h>
 # include <fcntl.h>
