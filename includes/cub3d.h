@@ -4,11 +4,11 @@
 # include "libft.h"
 # include "minilibx-linux/mlx.h"
 # include <errno.h>
-# include <fcnlt.h>
-# include <limits.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <math.h>
 # include <unistd.h>
 
 #endif
