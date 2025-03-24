@@ -24,10 +24,6 @@ int check_map_file(const char *file_path)
     line = check_end_of_line(line, fd);
     if (!line)
        printf("file is empty");
-    while (i != 4)
-    {
-        while 
-    }
 }
 
 int directions_setup(int fd)
@@ -36,8 +32,8 @@ int directions_setup(int fd)
 
     tab = [NO, SO, WE, EA]
     if (NO)
-        while (' ')
-
+        while (line[i] == ' ')
+            i++;
         tab = [SO, WE, EA]  
         return 0
     if (NO)
