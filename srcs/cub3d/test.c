@@ -78,3 +78,36 @@ int    obj_reader_next(t_obj_reader *self)
         obj_reader_next(&tetelecture);
     }
 } */
+/*
+recuperation_de_texture(t_obj_reader *tete_lecture)
+{
+    int i = 0;
+    texture = malloc taille
+    obj_reader_next(tete_lecture);
+    while (obj_reader_peek(tete_lecture) != ' ')
+    {
+        texture[i] = obj_reader_peek(tete_lecture);
+        i++;
+        obj_reader_next(tete_lecture);
+    }
+    recupration_sudestnordouest();
+
+}
+
+buffer[4096]
+t_obj_reader tete_lecture = obj_create_reader(1, buffer, 4096);
+obj_reader_peek(&tete_lecture);
+obj_reader_next(&tete_lecture);
+while mon ficher a du contenu
+{
+    si peek == ' '
+        skip_space(&tete_lecture);
+    si peek == '#'
+        recuperation_de_texture(&tete_lecture);
+    si peek == '1'
+        recuperation_de_la_map(&tete_lecture);
+    sinon 
+        gestion_erreur(&tete_lecture); // affichage de la ligne, colone et du caractere
+} 
+        
+*/
