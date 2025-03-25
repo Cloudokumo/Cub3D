@@ -1,63 +1,18 @@
 #include "cub3d.h"
 
-char	*check_end_of_line(char *line, int fd)
-{
-	line = get_next_line(fd);
-	if (!line)
-		return (NULL);
-	if (line[ft_strlen(line) - 1] == '\n')
-		line[ft_strlen(line) - 1] = '\0';
-	return (line);
-}
-
-int check_map_file(const char *file_path)
-{
-	int	fd;
-    int i;
-	char *line;
-
-    line = NULL;
-    i = 0;
-	fd = open(file_path, O_RDONLY);
-	if (fd < 0)
-		printf("No file found");
-    line = check_end_of_line(line, fd);
-    if (!line)
-       printf("file is empty");
-}
-
-int directions_setup(int fd)
-{
-    char **tab
-
-    tab = [NO, SO, WE, EA]
-    if (NO)
-        while (line[i] == ' ')
-            i++;
-        tab = [SO, WE, EA]  
-        return 0
-    if (NO)
-        tab = [SO, WE, EA]  
-        return 0
-    if (NO)
-        tab = [SO, WE, EA]  
-        return 0
-    if (NO)
-        tab = [SO, WE, EA]  
-        return 0
-    else 
-        return 1;
-}
-
 int main(int ac, char **av)
 {
+    void *mlx;
+    void *window;
+
     if (ac != 2)
     {
         printf("Wrong number of arguments\n");
-        return (0);
+        return (EXIT_FAILURE);
     }
-   	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
-        printf("Wrong file extension\n");
-	
-    return (0);
+    if (check_map_file(av[1]))
+    mlx = mlx_init();
+    window = mlx_new_window(mlx, 640, 480, "Cub3D");
+    mlx_loop(mlx);
+    return (EXIT_SUCCESS);
 }
