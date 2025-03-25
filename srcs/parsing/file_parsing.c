@@ -27,6 +27,52 @@ int read_file(char *line, int fd)
     }
 }
 
+//VERSION 1
+//Premiere examination de la map
+
+//lire chaque ligne
+
+///si ya des lignes avant check si c'est que des "1" avant le mur d'extremite (haut de map)
+///check si c'est la derniere ligne avec que des "1" (au debut, pour savoir l'extremite du haut de map)
+////(si oui prendre cette longueur en tant que max par defaut)
+
+///(continuer de prendre la longueur des lignes suivante et check si plus long que celle par defaut
+///si oui, le maj en tant que la ligne la plus longue)
+
+///check si c'est la premiere ligne avec que des "1" (a la fin, pour savoir l'extremite du bas de map)
+///si ya des lignes apres check si c'est que des "1" apres le mur d'extremite (bas de map)
+
+//Deuxieme examination de la map
+
+//lire ligne par ligne
+
+///(check si la longueur de la ligne est inf ou egal a la longueur max(connu avec la premiere examination)
+////si plus petit complete les espaces "vide" avec des "1", pour les considerer comme des murs)  
+//si haut de map( extremite du haut) n'est pas que des "1", tout arreter et afficher un msg d'erreur
+
+//check le milieu de map si c'est que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+///check si en dehors des 2 extremites c'est que des "1"
+///check a l'interieur des 2 extremites si cest que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+
+
+
+
+
+//VERSION 2
+//lire chaque ligne
+
+///si ya des lignes avant check si c'est que des "1" avant le mur d'extremite (haut de map)
+///check si c'est la derniere ligne avec que des "1" (au debut, pour savoir l'extremite du haut de map)
+
+///check si c'est la premiere ligne avec que des "1" (a la fin, pour savoir l'extremite du bas de map)
+///si ya des lignes apres check si c'est que des "1" apres le mur d'extremite (bas de map)
+
+//si haut de map( extremite du haut) n'est pas que des "1", tout arreter et afficher un msg d'erreur
+
+//check le milieu de map si c'est que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+///check si en dehors des 2 extremites c'est que des "1"
+///check a l'interieur des 2 extremites si cest que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+
 int is_map(char *line)
 {
     if (ft_strncmp(line, "NO", 2) == 0)
