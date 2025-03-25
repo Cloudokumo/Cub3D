@@ -11,12 +11,11 @@
 # include <math.h>
 # include <unistd.h>
 
-typedef struct s_directions
+typedef struct s_map
 {
-    char    dir_name;
-    char    *texture_path;
+    ;
     
-}               t_directions;
+}               t_map;
 
 
 #endif
