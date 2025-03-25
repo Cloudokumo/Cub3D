@@ -11,11 +11,26 @@
 # include <math.h>
 # include <unistd.h>
 
+typedef struct s_color
+{
+	int	r;
+	int	g;
+	int	b;
+}		t_color;
+
 typedef struct s_map
 {
-    ;
+    char    dir_name;
+    char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+    t_color	floor_color;
+	t_color	ceiling_color;
     
 }               t_map;
+
+
 
 
 #endif
