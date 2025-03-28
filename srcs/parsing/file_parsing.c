@@ -8,7 +8,7 @@ void print_map(t_map *maps, int i)
         printf("Erreur : maps ou maps->grid est NULL\n");
         return;
     }
-    printf("Nombre de lignes : %d\n", i);
+    printf("Nombre de lignes : %d", i);
     for (int j = 0; j < i; j++) // Parcours des lignes
     {
         if (!maps->grid[j])
@@ -35,41 +35,70 @@ void print_map(t_map *maps, int i)
     }
     return (line);
 } */
+void free_map(t_map *maps)
+{
+    int i;
+
+    i = 0;
+    while (i < maps->height)
+    {
+        free(maps->grid[i]);
+        maps->grid[i] = NULL;
+        i++;
+    }
+    free(maps->grid);
+    maps->grid = NULL;
+}
+
 int read_file(t_map *maps, int fd)
 {
     t_obj_reader tete_lecture;
     char line[1024]; // Stocke la ligne courante
     tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     char c;
-    int i = 0;
-    int line_len = 0;
 
     if (!maps)
     {
         printf("Erreur : maps est NULL\n");
         return (0);
     }
+    int i = 0;
+    int line_len = 0;
     while ((c = obj_reader_peek(&tete_lecture)) != 0)
     {
+
+        if (c != -1 && c != '\n')
+        {
+            line[line_len] = c;
+            line_len++;
+        }
         if (c == -1)
             break;
         if (c == '\n')
         {
+            printf(":%s\n", line);
+            line[line_len] = '\0';
             maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
             if (!maps->grid)
             {
                 printf("Erreur d'allocation pour maps->grid\n");
+                free_map(maps);
                 return (0);
             }
-            // strcpy(maps->grid[i], line);
-            line[line_len] = '\0';
             maps->grid[i] = ft_strdup(line);
-            printf("%s", maps->grid[i]);
+            // printf("Ligne stockée dans maps->grid[%d] : '* *%s||'\n", i, maps->grid[i]);
+            if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
+            {
+                printf("Erreur d'allocation pour maps->grid[%d]\n", i);
+                free_map(maps);
+                return (0);
+            }
+
+            // printf("%s", maps->grid[i]);
             i++;
+            maps->height++;
             line_len = 0;
         }
-        else
-            line[line_len++] = c;
         obj_reader_next(&tete_lecture);
     }
     maps->grid[i] = NULL; // Marque la fin du tableau de lignes
@@ -80,13 +109,12 @@ int read_file(t_map *maps, int fd)
 void init_vars(t_map *maps)
 {
     maps->height = 0;
-    maps->grid = ft_calloc(sizeof(char *), 1);
+    // maps->grid = ft_calloc(sizeof(char *), 1);
 }
 
 int check_map_file(t_map *maps, char **av)
 {
     int fd;
-
     if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
     {
         printf("Wrong file extension\n");
@@ -98,16 +126,16 @@ int check_map_file(t_map *maps, char **av)
         printf("No file found");
         return (EXIT_FAILURE);
     }
-    init_vars(maps);
-    read_file(maps, fd);
+    // init_vars(maps);
+    // read_file(maps, fd);
     if (read_file(maps, fd) == 1)
     {
         printf("\n");
         printf("c good3");
     }
+    free_map(maps);
+    close(fd);
 
-
-    free(maps->grid);
     return (1);
 }
 /*  line = check_end_of_line(line, fd);
