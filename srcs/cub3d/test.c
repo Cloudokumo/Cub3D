@@ -4,60 +4,11 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <unistd.h>
-typedef struct s_obj_reader
-{
-    int        fd;
-    char    *buffer;
-    size_t    buffer_size;
-    size_t    len;
-    size_t    i;
-    size_t    column;
-    size_t    line;
-}                t_obj_reader;
 
-t_obj_reader    obj_create_reader(int fd, char *buffer, size_t buffer_size)
-{
-    return ((t_obj_reader){
-        .fd = fd,
-        .buffer = buffer,
-        .buffer_size = buffer_size,
-        .len = 0,
-        .i = 0,
-        .column = 0,
-        .line = 1});
-}
 
-int16_t    obj_reader_peek(t_obj_reader *self)
-{
-    size_t    len;
 
-    if (self->i >= self->len)
-    {
-        len = read(self->fd, self->buffer, self->buffer_size);
-        if (len <= 0)
-            return (len);
-        self->i = 0;
-        self->len = len;
-    }
-    return (self->buffer[self->i]);
-}
 
-int    obj_reader_next(t_obj_reader *self)
-{
-    int16_t    c;
 
-    if ((c = obj_reader_peek(self)) == '\n')
-    {
-        self->line++;
-        self->column = 0;
-    }
-    else if (c == -1)
-        return (-1);
-    else
-        self->column++;
-    self->i++;
-    return (1);
-}
 
 /* int main(int argc, char **argv)
 {
@@ -111,3 +62,28 @@ while mon ficher a du contenu
 } 
         
 */
+
+/* 11111111111111
+11111111111111
+11100001111111
+11100000001111
+1111N000000111
+11000000000011
+11111111111111 */
+
+/* 
+//VERSION 2
+//lire chaque ligne
+
+///si ya des lignes avant check si c'est que des "1" avant le mur d'extremite (haut de map)
+///check si c'est la derniere ligne avec que des "1" (au debut, pour savoir l'extremite du haut de map)
+
+///check si c'est la premiere ligne avec que des "1" (a la fin, pour savoir l'extremite du bas de map)
+///si ya des lignes apres check si c'est que des "1" apres le mur d'extremite (bas de map)
+
+//si haut de map( extremite du haut) n'est pas que des "1", tout arreter et afficher un msg d'erreur
+
+//check le milieu de map si c'est que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+///check si en dehors des 2 extremites c'est que des "1"
+///check a l'interieur des 2 extremites si cest que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+ */
