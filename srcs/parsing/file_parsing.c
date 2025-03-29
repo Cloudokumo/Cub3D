@@ -49,72 +49,93 @@ void free_map(t_map *maps)
     free(maps->grid);
     maps->grid = NULL;
 }
+void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
+{
+    char c;
+    int i = 0;
+    int line_len = 0;
+    maps->width = 0;
+    maps->height = 0;
+    while ((c = obj_reader_peek(&tete_lecture)) != 0)
+    {
+        if (c != -1 && c != '\n')
+            line[line_len++] = c;
+        if (c == -1)
+            break;
+        if (c == '\n')
+            printf("\n");
+        maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
+        if (!maps->grid)
+            printf("Erreur d'allocation pour maps->grid\n");
+        line[line_len] = '\0';
+        maps->grid[i] = ft_strdup(line);
+        if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
+            printf("Erreur d'allocation pour maps->grid[%d]\n", i);
+        printf("%s", maps->grid[i]);
+        i++;
+        maps->width++;
+        maps->height++;
+        line_len = 0;
+        obj_reader_next(&tete_lecture);
+    }
+    printf("\nh:%d\n", maps->height);
+    printf("\nw:%d\n", maps->width);
+}
+
+void is_valid_borders(t_map *maps)
+{
+
+    int i;
+
+    i = 0;
+    while (maps->grid[0][i] != '\0')
+    {
+        if (maps->grid[0][i] != '1')
+            printf("le haut de la Map are invalid\n");
+        else if (maps->grid[maps->height - 1][i] != '1') // quand ya un '\n' en fin de caractere de la derniere ligne
+            printf("le bas de la Map are invalid\n");
+        else
+            printf("haut et bas good\n"); // quand ya pas de '\n' en fin de caractere de la derniere ligne
+        i++;
+    }
+    int j;
+    i = 1;
+    j = 0;
+    while (maps->grid[i][j])
+    {
+        j = 0;
+        if (maps->grid[i][j] != '1')
+            printf("le g de la Map are invalid\n");
+        else if (maps->grid[i]['\0' - 1] != '1')
+            printf("le d de la Map are invalid\n");
+        else
+            printf("gauche et droit good\n");
+        i++;
+    }
+}
 
 int read_file(t_map *maps, int fd)
 {
-    t_obj_reader tete_lecture;
-    char line[1024]; // Stocke la ligne courante
-    tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
-    char c;
 
+    t_obj_reader tete_lecture;
+    char line[BUFFER_SIZE]; // Stocke la ligne courante
+    tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     if (!maps)
     {
         printf("Erreur : maps est NULL\n");
         return (0);
     }
-    int i = 0;
-    int line_len = 0;
-    while ((c = obj_reader_peek(&tete_lecture)) != 0)
-    {
+    fill_the_grid(maps, tete_lecture, line);
+    printf("\n");
 
-        if (c != -1 && c != '\n')
-        {
-            line[line_len] = c;
-            line_len++;
-        }
-        if (c == -1)
-            break;
-        if (c == '\n')
-        {
-            printf(":%s\n", line);
-            line[line_len] = '\0';
-            maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
-            if (!maps->grid)
-            {
-                printf("Erreur d'allocation pour maps->grid\n");
-                free_map(maps);
-                return (0);
-            }
-            maps->grid[i] = ft_strdup(line);
-            // printf("Ligne stockée dans maps->grid[%d] : '* *%s||'\n", i, maps->grid[i]);
-            if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
-            {
-                printf("Erreur d'allocation pour maps->grid[%d]\n", i);
-                free_map(maps);
-                return (0);
-            }
-
-            // printf("%s", maps->grid[i]);
-            i++;
-            maps->height++;
-            line_len = 0;
-        }
-        obj_reader_next(&tete_lecture);
-    }
-    maps->grid[i] = NULL; // Marque la fin du tableau de lignes
-    // print_map(maps, i);   // Affiche la map
+    is_valid_borders(maps);
     return (1);
-}
-
-void init_vars(t_map *maps)
-{
-    maps->height = 0;
-    // maps->grid = ft_calloc(sizeof(char *), 1);
 }
 
 int check_map_file(t_map *maps, char **av)
 {
     int fd;
+
     if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
     {
         printf("Wrong file extension\n");
@@ -126,16 +147,13 @@ int check_map_file(t_map *maps, char **av)
         printf("No file found");
         return (EXIT_FAILURE);
     }
-    // init_vars(maps);
-    // read_file(maps, fd);
     if (read_file(maps, fd) == 1)
     {
         printf("\n");
         printf("c good3");
     }
-    free_map(maps);
     close(fd);
-
+    free_map(maps);
     return (1);
 }
 /*  line = check_end_of_line(line, fd);

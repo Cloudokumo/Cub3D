@@ -51,7 +51,6 @@ t_obj_reader obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t obj_reader_peek(t_obj_reader *self);
 int obj_reader_next(t_obj_reader *self);
 int check_map_file(t_map *maps, char **av);
-void init_vars(t_map *maps);
 
 void	free_map(t_map *map);
 

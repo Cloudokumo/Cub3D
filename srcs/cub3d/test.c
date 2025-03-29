@@ -1,12 +1,9 @@
 #include <stdint.h>
-#include  <stdlib.h>
- #include <fcntl.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <stdio.h>
 #include <unistd.h>
-
-
-
 
 
 
@@ -20,11 +17,11 @@
     tetelecture = obj_create_reader(fd, buffer, 4096);
     while ((c = obj_reader_peek(&tetelecture)) != 0)
     {
-		if (c == -1)
-		{
-			printf("error");
-			return(0);
-		}
+        if (c == -1)
+        {
+            printf("error");
+            return (0);
+        }
         printf("%c", c);
         obj_reader_next(&tetelecture);
     }
@@ -57,10 +54,10 @@ while mon ficher a du contenu
         recuperation_de_texture(&tete_lecture);
     si peek == '1'
         recuperation_de_la_map(&tete_lecture);
-    sinon 
+    sinon
         gestion_erreur(&tete_lecture); // affichage de la ligne, colone et du caractere
-} 
-        
+}
+
 */
 
 /* 11111111111111
@@ -71,7 +68,7 @@ while mon ficher a du contenu
 11000000000011
 11111111111111 */
 
-/* 
+/*
 //VERSION 2
 //lire chaque ligne
 
