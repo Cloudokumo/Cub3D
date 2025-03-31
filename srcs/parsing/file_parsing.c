@@ -80,30 +80,68 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 void is_valid_borders(t_map *maps)
 {
     int j;
-    int i;
-
-    i = 0;
-    j = 0;
-    while (!ft_strchr(" ", maps->grid[i][j]))
-    {
-        j = 0;
-
-        if (!ft_strchr("1", maps->grid[i][j]))
-            printf("Other characters than 1 were found\n");
-        i++;
-    }
-    printf("que de '1' in ligne one \n");
+    // int i;
 
     // i = 0;
-    // while (i < maps->height)
+    // j = 0;
+    // while (!ft_strchr(" ", maps->grid[i][j]))
     // {
-    //     if (maps->grid[i][0] != '1')
-    //         printf("Other characters than 1 were found\n");
+    //     // j = 0;
 
-    //     else if (maps->grid[i][maps->width - 1] != '1')
+    //     if (!ft_strchr("1", maps->grid[i][j]))
     //         printf("Other characters than 1 were found\n");
-
     //     i++;
+    // }
+    // printf("que de '1' in ligne one \n");
+
+
+     j = 0;
+     printf("h :%d\n", maps->height);
+
+     maps->height--;
+     printf("h :%d\n", maps->height);
+     if (ft_strchr(" ", maps->grid[maps->height][j]))
+     {
+         j = 0;
+         printf("valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
+        //  printf("valeur [%d][%d]: %s\n", maps->height - 1, j, maps->grid[maps->height - 1]);
+         // if (ft_strchr("1", maps->grid[maps->height][j]))
+
+         maps->height--;
+         printf("1valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
+
+         if (!ft_strchr("1", maps->grid[maps->height][j]))
+         {
+             // printf("valeur [%d][%d]: %c\n", maps->height - 2, j, maps->grid[maps->height - 2][j]);
+
+             printf("Other characters than 1 were found\n");
+         }
+         printf("2valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
+
+     }
+     printf("que de '1' in last line \n");
+
+    // while (maps->height > 0)
+    // {
+    //     if (ft_strchr(" ", maps->grid[maps->height - 1][j]))
+    //     {
+    //         if (ft_strchr("1", maps->grid[maps->height - 2][j]))
+    //         {
+    //             while (ft_strchr("1", maps->grid[maps->height - 2][j]))
+    //                 maps->height--;
+    //         }
+    //         else if (!ft_strchr("1", maps->grid[maps->height - 2][j]))
+    //             printf("Other characters than 1 were found\n");
+    //         else
+    //             maps->height--;
+    //     }
+    //     // if (ft_strchr("1", maps->grid[maps->height - 1][j]))
+    //     //     if (maps->grid[i][0] != '1')
+    //     //         printf("Other characters than 1 were found\n");
+
+    //     //     else if (maps->grid[i][maps->width - 1] != '1')
+    //     //         printf("Other characters than 1 were found\n");
+    //     maps->height--;
     // }
 
     //     // int i = 0;
