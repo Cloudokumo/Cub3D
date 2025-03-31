@@ -62,10 +62,10 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
             break;
         if (c == '\n')
             printf("\n");
+        line[line_len] = '\0';
         maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
         if (!maps->grid)
             printf("Erreur d'allocation pour maps->grid\n");
-        line[line_len] = '\0';
         maps->grid[i] = ft_strdup(line);
         printf("%s", maps->grid[i]);
         if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
@@ -77,54 +77,103 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
     }
 }
 
-// void is_valid_borders(t_map *maps)
-// {
-//     int i;
-
-//     i = 0;
-//     while (maps->grid[0][i] != '\0')
-//     {
-//         if (maps->grid[0][i] != '1')
-//             printf("le haut de la Map are invalid\n");
-//         else if (maps->grid[maps->height - 1][i] != '1') // quand ya un '\n' en fin de caractere de la derniere ligne
-//             printf("le bas de la Map are invalid\n");
-//         else
-//             printf("haut et bas good\n"); // quand ya pas de '\n' en fin de caractere de la derniere ligne
-//         i++;
-//     }
-//     int j;
-//     i = 1;
-//     j = 0;
-//     while (maps->grid[i][j])
-//     {
-//         j = 0;
-//         if (maps->grid[i][j] != '1')
-//             printf("le g de la Map are invalid\n");
-//         else if (maps->grid[i]['\0' - 1] != '1')
-//             printf("le d de la Map are invalid\n");
-//         else
-//             printf("gauche et droit good\n");
-//         i++;
-//     }
-// }
-void check_all_conditions(t_map *maps)
+void is_valid_borders(t_map *maps)
 {
-    int i;
     int j;
+    int i;
 
     i = 0;
-    while (maps->grid[i])
+    j = 0;
+    while (!ft_strchr(" ", maps->grid[i][j]))
     {
         j = 0;
-        while (maps->grid[i][j])
-        {
-            if (!ft_strchr("10", maps->grid[i][j]))
-                printf("Other characters than 1 0 were found");
-            j++;
-        }
+
+        if (!ft_strchr("1", maps->grid[i][j]))
+            printf("Other characters than 1 were found\n");
         i++;
     }
+    printf("que de '1' in ligne one \n");
+
+    // i = 0;
+    // while (i < maps->height)
+    // {
+    //     if (maps->grid[i][0] != '1')
+    //         printf("Other characters than 1 were found\n");
+
+    //     else if (maps->grid[i][maps->width - 1] != '1')
+    //         printf("Other characters than 1 were found\n");
+
+    //     i++;
+    // }
+
+    //     // int i = 0;
+    //     // while (maps->grid[i] && ft_strcmp(maps->grid[i], " ") != 0)
+    //     // {
+    //     //     if (ft_strcmp(maps->grid[i], "1") != 0)
+    //     //     {
+    //     //         printf("haut de map pas good\n");
+    //     //     }
+    //     //     printf("ce qu'il y a : *%s*\n", maps->grid[i]);
+    //     //     i++;
+    //     // }
+    //     // printf("hhhhh\n");
+
+    //     // while (maps->grid[i])
+    //     // {
+    //     //     j = 0;
+    //     //     while (maps->grid[i][j])
+    //     //     {
+    //     //         if (!ft_strchr("1", maps->grid[i][j]))
+    //     //             printf("Other characters than 1 were found\n");
+    //     //         j++;
+    //     //     }
+    //     //     i++;
+    //     // }
+    //     // printf("tout les conditions ok\n");
+    //     // int i;
 }
+
+// void check_all_conditions(t_map *maps)
+// {
+
+//     int i;
+//     int j;
+//     i = 0;
+//     j = 0;
+//     // while (maps->grid[i][j])
+//     // {
+//     //     if (!ft_strchr("10", maps->grid[i][j]))
+//     //     {
+//     //         printf("Other characters than 1 0 were found[%d][%d]: %c\n", i, j, maps->grid[i][j]);
+//     //         break;
+//     //     }
+//     //     i++;
+//     // }
+//     // printf("Other characters than 1 were found\n");
+
+//     // while (ft_strchr("\0", maps->grid[i][j]))
+//     // {
+//     //     if (!ft_strchr("10", maps->grid[i][j]))
+//     //     {
+//     //         printf("Other characters than 1 were found\n");
+//     //         printf("valeur [%d][%d]: %c\n", i, j, maps->grid[i][j]);
+//     //         break;
+//     //     }
+
+//     //     i++;
+//     // }
+
+//     // printf("valeur [0][0]: %c\n", maps->grid[0][0]);
+//     // printf("valeur [0]: '%s'\n", maps->grid[0]);
+
+//     // printf("valeur [1][0]: %c\n", maps->grid[1][0]);
+//     // printf("valeur [2][0]: %c\n", maps->grid[2][0]);
+//     // printf("valeur [2][1]: * ' %c ' *\n", maps->grid[2][1]);
+//     // printf("valeur [3][0]: + %c +\n", maps->grid[3][0]);
+
+//     // printf("valeur [3][1]: * ' %c ' *\n", maps->grid[3][1]);
+//     // printf("valeur [3][2]: + %c +\n", maps->grid[3][2]);
+// }
 int read_file(t_map *maps, int fd)
 {
     t_obj_reader tete_lecture;
@@ -138,8 +187,8 @@ int read_file(t_map *maps, int fd)
     // init_vars(maps);
     fill_the_grid(maps, tete_lecture, line);
     printf("\n");
-    // is_valid_borders(maps);
-    check_all_conditions(maps);
+    is_valid_borders(maps);
+    // check_all_conditions(maps);
     return (1);
 }
 

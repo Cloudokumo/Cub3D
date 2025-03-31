@@ -6,7 +6,7 @@
 /*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 14:36:23 by cylini            #+#    #+#             */
-/*   Updated: 2024/10/11 16:42:50 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/03/31 15:29:16 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int					ft_isprint(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+int					ft_strcmp(const char *s1, const char *s2);
+
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 int					ft_atoi(const char *nptr);
 size_t				ft_strlen(const char *s);
@@ -60,7 +62,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-void				ft_putnbr(int nb);
+// void				ft_putnbr(int nb);
 
 // Bonus Part
 

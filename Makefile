@@ -1,6 +1,6 @@
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g3
-# -g -O2 -Iminilibx-linux
+# # -g -O2 -Iminilibx-linux
 # LDFLAGS	= -Lminilibx-linux -lmlx -lXext -lX11 -lm
 NAME 	= Cub3d
 ### DIRECTORIES ################################################################
@@ -34,10 +34,10 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 ### RULES ######################################a#####################################
 
-all :  $(NAME)
+all :  $(NAME) $(MLX)
 
-$(NAME): $(OBJS) $(LIBFT) 
-	@$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBFT) $(MLX)
+	@$(CC) $(OBJS) $(LIBFT) $(MLX) $(LDFLAGS) -o $(NAME)
 # $(MLX)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
@@ -46,9 +46,9 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES_DIRS) -c $< -o $@
 
-# $(MLX):
-# 	@if [ ! -d $(MLX_DIR) ]; then git clone $(MLX_GIT) $(MLX_DIR); fi
-# 	@$(MAKE) -C $(MLX_DIR)
+$(MLX):
+	@if [ ! -d $(MLX_DIR) ]; then git clone $(MLX_GIT) $(MLX_DIR); fi
+	@$(MAKE) -C $(MLX_DIR)
 
 clean:
 	@rm -rf $(OBJS)
