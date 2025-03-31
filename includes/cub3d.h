@@ -31,6 +31,7 @@ typedef struct s_map
     char **grid;
     int width;
     int height;
+    int index_for_free;
     t_color floor_color;
     t_color ceiling_color;
 
