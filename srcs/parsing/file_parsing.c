@@ -242,6 +242,8 @@ int read_file(t_map *maps, int fd)
 int check_map_file(t_map *maps, char **av)
 {
     int fd;
+    t_obj_reader reader;
+    char buffer[BUFFER_SIZE];
 
     if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
     {
@@ -254,26 +256,42 @@ int check_map_file(t_map *maps, char **av)
         printf("No file found");
         return (EXIT_FAILURE);
     }
+    reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
+    if (!parse_map_config(&reader, maps))
+    {
+        printf("Error parsing map configuration\n");
+        close(fd);
+        free_map(maps);
+        return (EXIT_FAILURE);
+    }
     if (read_file(maps, fd) == 1)
     {
         printf("\n");
-        printf("c good3");
+        printf("Map configuration and data parsed successfully");
+    }
+    else
+    {
+        printf("Error reading map data\n");
+        close(fd);
+        free_map(maps);
+        return (EXIT_FAILURE);
     }
     close(fd);
     free_map(maps);
     return (1);
-    /*    line = check_end_of_line(line, fd);
-       if (!line)
-           printf("file is empty");
-       while (line = get_next_line(fd))
-       {
-           if (is_map(line) != 0)
-           {
-               get_texture(line);
-               get_color(line);
-           }
-       } */
 }
+
+/*  line = check_end_of_line(line, fd);
+ if (!line)
+    printf("file is empty");
+ while (line = get_next_line(fd))
+ {
+     if (is_map(line) != 0)
+     {
+         get_texture(line);
+         get_color(line);
+     }
+ } */
 
 // VERSION 1
 // Premiere examination de la map
