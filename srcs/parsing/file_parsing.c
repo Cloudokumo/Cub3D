@@ -63,62 +63,81 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
         if (c == '\n')
             printf("\n");
         line[line_len] = '\0';
-        // maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
-        // if (!maps->grid)
-        //     printf("Erreur d'allocation pour maps->grid\n");
-        
-        char **new_grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
-        if (!new_grid)
-        {
+        maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
+        if (!maps->grid)
             printf("Erreur d'allocation pour maps->grid\n");
-            return; // Ou gérer autrement si nécessaire
-        }
-        maps->grid = new_grid;
-        printf("Copie de la ligne: '%s'\n", line);
-
         maps->grid[i] = ft_strdup(line);
         if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
             printf("Erreur d'allocation pour maps->grid[%d]\n", i);
-        printf("[%d] : %s\n", i,maps->grid[i]);
+        printf("[%d] : %s\n", i, maps->grid[i]);
         i++;
         maps->index_for_free++;
         line_len = 0;
         obj_reader_next(&tete_lecture);
     }
+    maps->height = tete_lecture.line;
 }
 
 void is_valid_borders(t_map *maps)
 {
     int j;
     int i;
-
+    (void)maps;
     i = 0;
     j = 0;
-    // while (!ft_strchr(" ", maps->grid[i][j]))
-    // {
-    //     // j = 0;
-
-    //     if (!ft_strchr("1", maps->grid[i][j]))
-    //         printf("Other characters than 1 were found\n");
-    //     i++;
-    // }
-    // printf("largeur : %d\n", i);
-    // printf("que de '1' in ligne one \n");
-
-    while (maps->grid[i] && (ft_strchr("10 ", maps->grid[i][j]) || ft_strchr(" ", maps->grid[i][j])))
+    while (!ft_strchr(" ", maps->grid[i][j]))
     {
-        printf("grid[%d][%d] = '%c'\n", i, j, maps->grid[i][j]);
-        if (ft_strchr(" ", maps->grid[i][j]))
-        {
-            printf("hauteur + 1 \n");
-            maps->height++;
-        }
+        // j = 0;
+
+        if (!ft_strchr("1", maps->grid[i][j]))
+            printf("AOther characters than 1 were found\n");
         i++;
     }
-    printf("hauteur : %d\n", maps->height);
+    maps->width = i;
+    printf("largeur : %d\n", i);
+    printf("que de '1' in ligne one \n");
+
+
+    // int k = 0;
+    // j = 0;
+    // while (maps->height > 0 && !ft_strchr(" ", maps->grid[j][k]))
+    // {
+    //     /* if (maps->grid[0][k] != 1)
+    //         printf("BOther characters than 1 on top were found\n");
+    //     else */
+    //     // printf("hauteur : %d\n", maps->height);
+
+    //     if (!ft_strchr("1", maps->grid[j][k]))
+    //     {
+    //         printf("Other characters than 1 on bottom were found\n");
+    //         printf("valeur a [%d][%d] : %c\n", j, k, maps->grid[j][k]);
+    //     }
+    //     j++;
+    // }
+
+    // k = 0;
+    // while (k < maps->height)
+    // {
+    //     if (maps->grid[k][0] != 1)
+    //         printf("Other characters than 1 on left were found\n");
+    //     else if (maps->grid[k][maps->width - 1] != 1)
+    //         printf("Other characters than 1 on right were found\n");
+    //     k++;
+    // }
+
+    // while (maps->grid[i] && (ft_strchr("10 ", maps->grid[i][j]) || ft_strchr(" ", maps->grid[i][j])))
+    // {
+    //     printf("grid[%d][%d] = '%c'\n", i, j, maps->grid[i][j]);
+    //     if (ft_strchr(" ", maps->grid[i][j]))
+    //     {
+    //         printf("hauteur + 1 \n");
+    //         maps->height++;
+    //     }
+    //     i++;
+    // }
 
     /*   while (ft_strchr("10", maps->grid[i][j]) || ft_strchr(" ", maps->grid[i][j]))
-  {
+    {
       // j = 0;
 
       if (!ft_strchr(" ", maps->grid[i][j]))
@@ -127,7 +146,7 @@ void is_valid_borders(t_map *maps)
           maps->height++;
       }
       i++;
-  } */
+    } */
 
     // j = 0;
     // printf("h :%d\n", maps->height);
@@ -212,6 +231,8 @@ int read_file(t_map *maps, int fd)
     }
     // init_vars(maps);
     fill_the_grid(maps, tete_lecture, line);
+    // printf("hauteur de la mapaaaaa: %d\n", maps->height);
+
     printf("\n");
     is_valid_borders(maps);
     // check_all_conditions(maps);
