@@ -61,6 +61,8 @@ char *read_string_map(t_obj_reader *reader)
         if (len < sizeof(temp) - 1)
             temp[len++] = c;
         obj_reader_next(reader);
+        if (c == '\0')
+            break;
     }
     if (len == 0)
         return NULL;
@@ -69,30 +71,30 @@ char *read_string_map(t_obj_reader *reader)
         return NULL;
     memcpy(str, temp, len);
     str[len] = '\0';
-    // printf("%s yes\n", str);
     return str;
 }
 
 void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
-    char c;
+    // char c;
     int i = 0;
     // size_t line_len = 0;
-    // char *str = NULL;
+    char *str = NULL;
 
     (void)line;
     // str = read_string_map(&tete_lecture);
     maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
     if (!maps->grid)
         printf("Erreur d'allocation pour maps->grid\n");
-    printf("AAAAA\n");
-    while ((c = obj_reader_peek(&tete_lecture)) != -1)
+    str = read_string_map(&tete_lecture);
+    while (str[0] != '\0')
     {
-        maps->grid[i] = ft_strdup(read_string_map(&tete_lecture));
+        maps->grid[i] = str;
         if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
             printf("Erreur d'allocation pour maps->grid[%d]\n", i);
         printf("[%d] : %s\n", i, maps->grid[i]);
         i++;
+        str = read_string_map(&tete_lecture);
     }
     printf("fin\n");
     // i++;
