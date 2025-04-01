@@ -1,5 +1,5 @@
 #ifndef CUB3D_H
-# define CUB3D_H
+#define CUB3D_H
 
 #include "../Libft/libft.h"
 // # include "../minilibx-linux/mlx.h"
@@ -12,7 +12,6 @@
 #include <unistd.h>
 // # include <sys/stat.h>
 #include <stdint.h>
-#define BUFFER_SIZE 1
 
 typedef struct s_color
 {
@@ -46,17 +45,17 @@ typedef struct s_obj_reader
     size_t i;
     size_t column;
     size_t line;
-}               t_obj_reader;
+} t_obj_reader;
 
 t_obj_reader obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t obj_reader_peek(t_obj_reader *self);
 int obj_reader_next(t_obj_reader *self);
 int check_map_file(t_map *maps, char **av);
+char *read_string_map(t_obj_reader *reader);
 
-void	free_map(t_map *map);
+void free_map(t_map *map);
 
-
-int     skip_whitespace(t_obj_reader *reader);
+int skip_whitespace(t_obj_reader *reader);
 char *read_string(t_obj_reader *reader);
 int parse_map_config(t_obj_reader *reader, t_map *map);
 int parse_color(t_obj_reader *reader, t_color *color);
