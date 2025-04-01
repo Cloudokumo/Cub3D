@@ -34,6 +34,7 @@ char *read_string(t_obj_reader *reader)
     return str;
 }
 
+
 int parse_map_config(t_obj_reader *reader, t_map *map)
 {
     int16_t c;
@@ -123,7 +124,10 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
             }
             found_c = 1;
         }
-        else {
+        else 
+        { 
+            if (type[0] == '1')
+                return 1;
             printf("Error: Unknown map element: %s\n", type);
             free(type);
             return 0;
