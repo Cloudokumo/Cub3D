@@ -31,7 +31,7 @@ int obj_reader_next(t_obj_reader *self)
 {
     int16_t c;
 
-    if ((c = obj_reader_peek(self)) == '\0')
+    if ((c = obj_reader_peek(self)) == '\n')
     {
         self->line++;
         self->column = 0;

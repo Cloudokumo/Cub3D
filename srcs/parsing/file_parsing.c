@@ -208,16 +208,6 @@ void is_valid_borders(t_map *maps)
 //     //     i++;
 //     // }
 
-//     // printf("valeur [0][0]: %c\n", maps->grid[0][0]);
-//     // printf("valeur [0]: '%s'\n", maps->grid[0]);
-
-//     // printf("valeur [1][0]: %c\n", maps->grid[1][0]);
-//     // printf("valeur [2][0]: %c\n", maps->grid[2][0]);
-//     // printf("valeur [2][1]: * ' %c ' *\n", maps->grid[2][1]);
-//     // printf("valeur [3][0]: + %c +\n", maps->grid[3][0]);
-
-//     // printf("valeur [3][1]: * ' %c ' *\n", maps->grid[3][1]);
-//     // printf("valeur [3][2]: + %c +\n", maps->grid[3][2]);
 // }
 int read_file(t_map *maps, int fd)
 {
