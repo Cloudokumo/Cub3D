@@ -55,5 +55,10 @@ int check_map_file(t_map *maps, char **av);
 void	free_map(t_map *map);
 
 
+int     skip_whitespace(t_obj_reader *reader);
+char *read_string(t_obj_reader *reader);
+int parse_map_config(t_obj_reader *reader, t_map *map);
+int parse_color(t_obj_reader *reader, t_color *color);
+char *read_path(t_obj_reader *reader);
 
 #endif
