@@ -131,13 +131,16 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
         }
         else 
         { 
-            if (type[0] == '1')
-                return 1;
             printf("Error: Unknown map element: %s\n", type);
             free(type);
             return 0;
         }
         free(type);
+        if (found_no && found_so && found_we && found_ea && found_f && found_c) 
+        {
+            printf("Everything is found :D\n");
+            return 1;
+        }
     }
     if (!found_no || !found_so || !found_we || !found_ea || !found_f || !found_c) 
     {
