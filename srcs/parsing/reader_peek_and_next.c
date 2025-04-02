@@ -35,8 +35,6 @@ int obj_reader_next(t_obj_reader *self)
     {
         self->line++;
         self->column = 0;
-        // printf("hauteur de la map: %zu\n", self->line);
-        // printf("allo\n");
     }
     else if (c == -1)
         return (-1);

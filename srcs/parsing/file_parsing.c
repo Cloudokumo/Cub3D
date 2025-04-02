@@ -21,21 +21,6 @@ void print_map(t_map *maps, int i)
     }
 }
 
-void free_map(t_map *maps)
-{
-    int i;
-
-    i = 0;
-    while (i < maps->height)
-    {
-        free(maps->grid[i]);
-        maps->grid[i] = NULL;
-        i++;
-    }
-    free(maps->grid);
-    maps->grid = NULL;
-}
-
 char *read_string_map(t_obj_reader *reader)
 {
     char *str = NULL;
@@ -103,86 +88,13 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
     free(line);
 }
 
-void is_valid_borders(t_map *maps)
-{
-    int i;
-
-    i = 0;
-    while (i < maps->width)
-    {
-        if (maps->grid[0][i] != '1')
-            printf("H :Map edges are invalid.\n");
-        else if (maps->grid[maps->height - 1][i] != '1')
-            printf("B: Map edges are invalid.\n");
-        // else
-        // printf("H et B :Map edges are valid.\n");
-        i++;
-    }
-    i = 0;
-    while (i < maps->height)
-    {
-        if (maps->grid[i][0] != '1')
-            printf("G: Map edges are invalid.\n");
-        else if (maps->grid[i][maps->width - 1] != '1')
-            printf("D: Map edges are invalid.\n");
-        // else
-        //     printf("G et D: Map edges are valid.\n");
-        i++;
-    }
-}
-
-void check_all_conditions(t_map *maps)
-{
-    int i;
-    int j;
-
-    j = 0;
-    while (maps->grid[j])
-    {
-        i = 0;
-        while (maps->grid[j][i])
-        {
-            if (!ft_strchr("10NSWE", maps->grid[j][i]))
-                printf("Other characters than 1 0 were found");
-            i++;
-        }
-        j++;
-    }
-}
-
-void check_N_S_W_E_elements(t_map *maps)
-{
-    int i;
-    int j;
-    int player_found = 0;
-    j = 0;
-    while (maps->grid[j])
-    {
-        i = 0;
-        while (maps->grid[j][i])
-        {
-            if(player_found == 1 && ft_strchr("NSWE", maps->grid[j][i]))
-            {
-                printf("Error: N, S, W, E elements were found again\n");
-                printf("second : Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
-                return;
-            }
-            else if (ft_strchr("NSWE", maps->grid[j][i]))
-            {
-                player_found = 1;
-                printf("first : Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
-            }
-            i++;
-        }
-        j++;
-    }
-    printf("nb d'element 'NSWE' est 1\n");
-}
-
 int read_file(t_map *maps, int fd)
 {
+
     t_obj_reader tete_lecture;
+ 
     char line[4096];
+ 
     tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     if (!maps)
     {
@@ -190,9 +102,6 @@ int read_file(t_map *maps, int fd)
         return (0);
     }
     fill_the_grid(maps, tete_lecture, line);
-    is_valid_borders(maps);
-    check_all_conditions(maps);
-    check_N_S_W_E_elements(maps);
     return (1);
 }
 
@@ -214,15 +123,16 @@ int check_map_file(t_map *maps, char **av)
         return (EXIT_FAILURE);
     }
     // reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
-    // if (!parse_map_config(&reader, maps))
+    // if (!parse_map_config(&reader, maps/* , buffer, fd */))
     // {
     //     printf("Error parsing map configuration\n");
     //     close(fd);
     //     free_map(maps);
     //     return (EXIT_FAILURE);
     // }
+
     if (read_file(maps, fd) == 1)
-        printf("Map configuration and data parsed successfully");
+        printf("Map configuration and data parsed successfully\n");
     else
     {
         printf("Error reading map data\n");
@@ -230,6 +140,9 @@ int check_map_file(t_map *maps, char **av)
         free_map(maps);
         return (EXIT_FAILURE);
     }
+    is_valid_borders(maps);
+    check_all_conditions(maps);
+    check_N_S_W_E_elements(maps);
     close(fd);
     free_map(maps);
     return (EXIT_SUCCESS);
