@@ -61,6 +61,7 @@ char *read_string_map(t_obj_reader *reader)
     str[len] = '\0';
     return str;
 }
+
 void create_line_of_map(t_map *maps, char *line, int i)
 {
     maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
