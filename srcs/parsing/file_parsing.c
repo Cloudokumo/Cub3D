@@ -199,8 +199,8 @@ int read_file(t_map *maps, int fd)
 int check_map_file(t_map *maps, char **av)
 {
     int fd;
-    // t_obj_reader reader;
-    // char buffer[BUFFER_SIZE];
+    t_obj_reader reader;
+    char buffer[BUFFER_SIZE];
 
     if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
     {
@@ -213,14 +213,14 @@ int check_map_file(t_map *maps, char **av)
         printf("No file found");
         return (EXIT_FAILURE);
     }
-    // reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
-    // if (!parse_map_config(&reader, maps))
-    // {
-    //     printf("Error parsing map configuration\n");
-    //     close(fd);
-    //     free_map(maps);
-    //     return (EXIT_FAILURE);
-    // }
+    reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
+    if (!parse_map_config(&reader, maps))
+    {
+        printf("Error parsing map configuration\n");
+        close(fd);
+        free_map(maps);
+        return (EXIT_FAILURE);
+    }
     if (read_file(maps, fd) == 1)
         printf("Map configuration and data parsed successfully");
     else

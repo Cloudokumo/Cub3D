@@ -44,6 +44,11 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
     
     while ((c = skip_whitespace(reader)) != -1)
     {
+        if (found_no && found_so && found_we && found_ea && found_f && found_c) 
+        {
+            printf("Everything is found :D\n");
+            return 1;
+        }
         type = read_string(reader);
         if (!type)
             break;
