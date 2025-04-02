@@ -14,25 +14,13 @@ void print_map(t_map *maps, int i)
         if (!maps->grid[j])
         {
             printf("maps->grid[%d] est NULL !\n", j);
-            continue;
         }
-        // printf("Ligne %d: ", j);
         for (int k = 0; maps->grid[j][k] != '\0'; k++) // Parcours des colonnes
             printf("[%c]", maps->grid[j][k]);          // Affiche chaque caractère avec des crochets
         printf("\n");                                  // Nouvelle ligne après chaque ligne affichée
     }
 }
 
-/// A verifier si on prends en compte ce cas ou pas dans la lecture
-// char *check_end_of_line(char *line, int fd)
-// {
-//     line = get_next_line(fd);
-//     if (!line)
-//         return (NULL);
-//     if (line[ft_strlen(line) - 1] == '\n')
-//         line[ft_strlen(line) - 1] = '\0';
-//     return (line);
-// }
 void free_map(t_map *maps)
 {
     int i;
@@ -66,7 +54,7 @@ char *read_string_map(t_obj_reader *reader)
     }
     if (len == 0)
         return NULL;
-    str = malloc(sizeof(char) * (len + 1));
+    str = malloc(len + 1);
     if (!str)
         return NULL;
     ft_memcpy(str, temp, len);
@@ -105,7 +93,7 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
         return;
     }
     maps->width = ft_strlen(line);
-    while (line[0] != '\0')
+    while (line && line[0] != '\0')
     {
         create_line_of_map(maps, line, i);
         i++;
@@ -125,8 +113,8 @@ void is_valid_borders(t_map *maps)
             printf("H :Map edges are invalid.\n");
         else if (maps->grid[maps->height - 1][i] != '1')
             printf("B: Map edges are invalid.\n");
-        else
-            printf("H et B :Map edges are valid.\n");
+        // else
+        // printf("H et B :Map edges are valid.\n");
         i++;
     }
     i = 0;
@@ -136,53 +124,64 @@ void is_valid_borders(t_map *maps)
             printf("G: Map edges are invalid.\n");
         else if (maps->grid[i][maps->width - 1] != '1')
             printf("D: Map edges are invalid.\n");
-        else
-            printf("G et D: Map edges are valid.\n");
+        // else
+        //     printf("G et D: Map edges are valid.\n");
         i++;
     }
 }
 
 void check_all_conditions(t_map *maps)
 {
-
     int i;
     int j;
-    i = 0;
-    j = 0;
 
-    while ((j < 10))
+    j = 0;
+    while (maps->grid[j])
     {
-        printf("valeur [%d][%d]: %c\n", i, j, maps->grid[i][j]);
+        i = 0;
+        while (maps->grid[j][i])
+        {
+            if (!ft_strchr("10NSWE", maps->grid[j][i]))
+                printf("Other characters than 1 0 were found");
+            i++;
+        }
         j++;
     }
-
-    //     // while (maps->grid[i][j])
-    //     // {
-    //     //     if (!ft_strchr("10", maps->grid[i][j]))
-    //     //     {
-    //     //         printf("Other characters than 1 0 were found[%d][%d]: %c\n", i, j, maps->grid[i][j]);
-    //     //         break;
-    //     //     }
-    //     //     i++;
-    //     // }
-    //     // printf("Other characters than 1 were found\n");
-
-    //     // while (ft_strchr("\0", maps->grid[i][j]))
-    //     // {
-    //     //     if (!ft_strchr("10", maps->grid[i][j]))
-    //     //     {
-    //     //         printf("Other characters than 1 were found\n");
-    //     //         printf("valeur [%d][%d]: %c\n", i, j, maps->grid[i][j]);
-    //     //         break;
-    //     //     }
-
-    //     //     i++;
-    //     // }
 }
+
+void check_N_S_W_E_elements(t_map *maps)
+{
+    int i;
+    int j;
+    int player_found = 0;
+    j = 0;
+    while (maps->grid[j])
+    {
+        i = 0;
+        while (maps->grid[j][i])
+        {
+            if(player_found == 1 && ft_strchr("NSWE", maps->grid[j][i]))
+            {
+                printf("Error: N, S, W, E elements were found again\n");
+                printf("second : Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
+                return;
+            }
+            else if (ft_strchr("NSWE", maps->grid[j][i]))
+            {
+                player_found = 1;
+                printf("first : Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
+            }
+            i++;
+        }
+        j++;
+    }
+    printf("nb d'element 'NSWE' est 1\n");
+}
+
 int read_file(t_map *maps, int fd)
 {
     t_obj_reader tete_lecture;
-    char line[4096]; // Stocke la ligne courante
+    char line[4096];
     tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     if (!maps)
     {
@@ -190,11 +189,9 @@ int read_file(t_map *maps, int fd)
         return (0);
     }
     fill_the_grid(maps, tete_lecture, line);
-    // printf("hauteur de la mapaaaaa: %d\n", maps->height);
-
-    // printf("\n");
     is_valid_borders(maps);
-    // check_all_conditions(maps);
+    check_all_conditions(maps);
+    check_N_S_W_E_elements(maps);
     return (1);
 }
 
@@ -234,7 +231,7 @@ int check_map_file(t_map *maps, char **av)
     }
     close(fd);
     free_map(maps);
-    return (1);
+    return (EXIT_SUCCESS);
 }
 
 /*  line = check_end_of_line(line, fd);
@@ -275,117 +272,3 @@ int check_map_file(t_map *maps, char **av)
 // check le milieu de map si c'est que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
 /// check si en dehors des 2 extremites c'est que des "1"
 /// check a l'interieur des 2 extremites si cest que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
-
-/* int is_map(char *line)
-{
-    if (ft_strncmp(line, "NO", 2) == 0)
-        return (1);
-    if (ft_strncmp(line, "SO", 2) == 0)
-        return (1);
-    if (ft_strncmp(line, "EA", 2) == 0)
-        return (1);
-    if (ft_strncmp(line, "WE", 2) == 0)
-        return (1);
-    if (line[0] == 'C' && line[0] == 'F')
-        return (1);
-    else
-        return (0);
-} */
-
-// tab['NO', 'SO', 'WE', 'EA'] = {0, 0, 0, 0};
-
-// if (NO)
-//     while (line[i] == ' ')
-//         i++;
-//     tab = [SO, WE, EA]
-//     return 0
-// if (NO)
-//     tab = [SO, WE, EA]
-//     return 0
-// if (NO)
-//     tab = [SO, WE, EA]
-//     return 0
-// if (NO)
-//     tab = [SO, WE, EA]
-//     return 0
-// else
-//     return 1;
-
-// int k = 0;
-// j = 0;
-// while (maps->height > 0 && !ft_strchr(" ", maps->grid[j][k]))
-// {
-//     /* if (maps->grid[0][k] != 1)
-//         printf("BOther characters than 1 on top were found\n");
-//     else */
-//     // printf("hauteur : %d\n", maps->height);
-
-//     if (!ft_strchr("1", maps->grid[j][k]))
-//     {
-//         printf("Other characters than 1 on bottom were found\n");
-//         printf("valeur a [%d][%d] : %c\n", j, k, maps->grid[j][k]);
-//     }
-//     j++;
-// }
-
-// k = 0;
-// while (k < maps->height)
-// {
-//     if (maps->grid[k][0] != 1)
-//         printf("Other characters than 1 on left were found\n");
-//     else if (maps->grid[k][maps->width - 1] != 1)
-//         printf("Other characters than 1 on right were found\n");
-//     k++;
-// }
-
-// while (maps->grid[i] && (ft_strchr("10 ", maps->grid[i][j]) || ft_strchr(" ", maps->grid[i][j])))
-// {
-//     printf("grid[%d][%d] = '%c'\n", i, j, maps->grid[i][j]);
-//     if (ft_strchr(" ", maps->grid[i][j]))
-//     {
-//         printf("hauteur + 1 \n");
-//         maps->height++;
-//     }
-//     i++;
-// }
-
-/*   while (ft_strchr("10", maps->grid[i][j]) || ft_strchr(" ", maps->grid[i][j]))
-{
-  // j = 0;
-
-  if (!ft_strchr(" ", maps->grid[i][j]))
-  {
-      printf("hauteur + 1 \n");
-      maps->height++;
-  }
-  i++;
-} */
-
-// j = 0;
-// printf("h :%d\n", maps->height);
-
-// maps->height--;
-// maps->height--;
-
-// printf("h :%d\n", maps->height);
-// while (!ft_strchr(" ", maps->grid[maps->height][j]))
-// {
-//     // j = 0;
-//     // printf("valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
-//     //  printf("valeur [%d][%d]: %s\n", maps->height - 1, j, maps->grid[maps->height - 1]);
-//     // if (ft_strchr("1", maps->grid[maps->height][j]))
-
-//     // maps->height--;
-//     // printf("1valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
-
-//     if (!ft_strchr("1", maps->grid[maps->height][j]))
-//     {
-//         // printf("valeur [%d][%d]: %c\n", maps->height - 2, j, maps->grid[maps->height - 2][j]);
-
-//         printf("Other characters than 1 were found\n");
-//     }
-//     maps->height--;
-
-//     // printf("2valeur [%d][%d]: %s\n", maps->height, j, maps->grid[maps->height]);
-// }
-// printf("que de '1' in last line \n");
