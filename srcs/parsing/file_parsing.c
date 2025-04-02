@@ -38,7 +38,7 @@ void free_map(t_map *maps)
     int i;
 
     i = 0;
-    while (i < maps->index_for_free)
+    while (i < maps->height)
     {
         free(maps->grid[i]);
         maps->grid[i] = NULL;
@@ -66,63 +66,80 @@ char *read_string_map(t_obj_reader *reader)
     }
     if (len == 0)
         return NULL;
-    str = malloc(len + 1);
+    str = malloc(sizeof(char) * (len + 1));
     if (!str)
         return NULL;
-    memcpy(str, temp, len);
+    ft_memcpy(str, temp, len);
     str[len] = '\0';
     return str;
+}
+void create_line_of_map(t_map *maps, char *line, int i)
+{
+    maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
+    if (!maps->grid)
+    {
+        printf("Erreur d'allocation pour maps->grid\n");
+        free_map(maps);
+        return;
+    }
+    maps->grid[i] = ft_strdup(line);
+    if (!maps->grid[i])
+    {
+        printf("Erreur d'allocation pour maps->grid[%d]\n", i);
+        free_map(maps);
+        return;
+    }
+    maps->height++;
+    free(line);
+    printf("[%d] : %s\n", i, maps->grid[i]);
 }
 
 void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
-    // char c;
     int i = 0;
-    // size_t line_len = 0;
-    char *str = NULL;
 
-    (void)line;
-    // str = read_string_map(&tete_lecture);
-    maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
-    if (!maps->grid)
-        printf("Erreur d'allocation pour maps->grid\n");
-    str = read_string_map(&tete_lecture);
-    while (str[0] != '\0')
+    line = read_string_map(&tete_lecture);
+    if (!line)
     {
-        maps->grid[i] = str;
-        if (!maps->grid[i]) // Vérifie que strdup n’a pas échoué
-            printf("Erreur d'allocation pour maps->grid[%d]\n", i);
-        printf("[%d] : %s\n", i, maps->grid[i]);
-        i++;
-        str = read_string_map(&tete_lecture);
+        printf("file is empty");
+        return;
     }
-    printf("fin\n");
-    // i++;
-    // maps->index_for_free++;
-    // line_len = 0;
-    // obj_reader_next(&tete_lecture);
-
-    maps->height = tete_lecture.line;
+    maps->width = ft_strlen(line);
+    while (line[0] != '\0')
+    {
+        create_line_of_map(maps, line, i);
+        i++;
+        line = read_string_map(&tete_lecture);
+    }
+    free(line);
 }
 
 void is_valid_borders(t_map *maps)
 {
-    int j;
     int i;
-    (void)maps;
-    i = 0;
-    j = 0;
-    while (!ft_strchr(" ", maps->grid[i][j]))
-    {
-        // j = 0;
 
-        if (!ft_strchr("1", maps->grid[i][j]))
-            printf("AOther characters than 1 were found\n");
+    i = 0;
+    while (i < maps->width)
+    {
+        if (maps->grid[0][i] != '1')
+            printf("H :Map edges are invalid.\n");
+        else if (maps->grid[maps->height - 1][i] != '1')
+            printf("B: Map edges are invalid.\n");
+        else
+            printf("H et B :Map edges are valid.\n");
         i++;
     }
-    maps->width = i;
-    printf("largeur : %d\n", i);
-    printf("que de '1' in ligne one \n");
+    i = 0;
+    while (i < maps->height)
+    {
+        if (maps->grid[i][0] != '1')
+            printf("G: Map edges are invalid.\n");
+        else if (maps->grid[i][maps->width - 1] != '1')
+            printf("D: Map edges are invalid.\n");
+        else
+            printf("G et D: Map edges are valid.\n");
+        i++;
+    }
 }
 
 void check_all_conditions(t_map *maps)
@@ -172,12 +189,11 @@ int read_file(t_map *maps, int fd)
         printf("Erreur : maps est NULL\n");
         return (0);
     }
-    // init_vars(maps);
     fill_the_grid(maps, tete_lecture, line);
     // printf("hauteur de la mapaaaaa: %d\n", maps->height);
 
     // printf("\n");
-    // is_valid_borders(maps);
+    is_valid_borders(maps);
     // check_all_conditions(maps);
     return (1);
 }
@@ -208,10 +224,7 @@ int check_map_file(t_map *maps, char **av)
     //     return (EXIT_FAILURE);
     // }
     if (read_file(maps, fd) == 1)
-    {
-        printf("\n");
         printf("Map configuration and data parsed successfully");
-    }
     else
     {
         printf("Error reading map data\n");
