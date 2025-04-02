@@ -33,6 +33,8 @@ char *read_string(t_obj_reader *reader)
     return str;
 }
 
+
+
 int parse_map_config(t_obj_reader *reader, t_map *map/* , char *line, int fd */)
 {
     int16_t c;
@@ -42,6 +44,11 @@ int parse_map_config(t_obj_reader *reader, t_map *map/* , char *line, int fd */)
 
     while ((c = skip_whitespace(reader)) != -1)
     {
+        if (found_no && found_so && found_we && found_ea && found_f && found_c) 
+        {
+            printf("Everything is found :D\n");
+            return 1;
+        }
         type = read_string(reader);
         if (!type)
             break;
@@ -149,6 +156,11 @@ int parse_map_config(t_obj_reader *reader, t_map *map/* , char *line, int fd */)
             return 0;
         }
         free(type);
+        if (found_no && found_so && found_we && found_ea && found_f && found_c) 
+        {
+            printf("Everything is found :D\n");
+            return 1;
+        }
     }
     if (!found_no || !found_so || !found_we || !found_ea || !found_f || !found_c)
     {
