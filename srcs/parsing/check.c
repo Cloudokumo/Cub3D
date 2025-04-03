@@ -103,35 +103,38 @@ void check_N_S_W_E_elements(t_map *maps)
 	printf("nb d'element 'NSWE' est 1\n");
 }
 
-int skip_whitespace_after_map(int fd)
+int skip_whitespace_after_map(t_obj_reader *reader)
 {
-	int16_t c;
-	t_obj_reader reader;
-    char line[4096];
+    int16_t c;
 
-	reader = obj_create_reader(fd, line, BUFFER_SIZE);
-	while ((c = obj_reader_peek(&reader)) != -1)
-	{
-		if (c == ' ' || c == '\t' || c == '\n')
-			obj_reader_next(&reader); // Ignorer les espaces blancs
-		else /* if (c != ' ' && c != '\t' && c != '\n') */
-		{
-			printf("%c\n", c);
-			obj_reader_next(&reader);
-			return -1; // Retourner -1 si EOF
-		}
-	}
-	return 0; // Retourne -1 si EOF
+    // Tant que nous n'avons pas atteint la fin du fichier
+    while ((c = obj_reader_peek(reader)) != -1)
+    {
+        // Si c'est un caractère blanc, on l'ignore
+        if (c == ' ' || c == '\t' || c == '\n')
+        {
+            obj_reader_next(reader); // Avancer au prochain caractère
+        }
+        // Si c'est un caractère non blanc et non valide, on renvoie une erreur
+        else if (c != ' ' && c != '\t' && c != '\n')
+        {
+            printf("❌❌ Error: Invalid character '%c' found after the map\n", c);
+            return -1; // Retourner une erreur
+        }
+    }
+
+    // Fin du fichier atteint sans erreurs
+    return 0;
 }
-void check_after_map_is_clean(int fd)
-{
-	if (skip_whitespace_after_map(fd) != -1) // Si on trouve un caractère non blanc
-	{
-		printf("❌❌ Error: Unexpected content after map\n");
-		exit(EXIT_FAILURE);
-	}
-	// while (obj_reader_peek(fd) != -1)
-	// 	obj_reader_next(fd);
-	printf("✅ No extra content after the map!\n");
-}
+// void check_after_map_is_clean(int fd)
+// {
+// 	if (skip_whitespace_after_map(fd) != -1) // Si on trouve un caractère non blanc
+// 	{
+// 		printf("❌❌ Error: Unexpected content after map\n");
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	// while (obj_reader_peek(fd) != -1)
+// 	// 	obj_reader_next(fd);
+// 	printf("✅ No extra content after the map!\n");
+// }
 

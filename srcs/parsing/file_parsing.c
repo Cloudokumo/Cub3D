@@ -85,6 +85,12 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
         i++;
         line = read_string_map(&tete_lecture);
     }
+    if (skip_whitespace_after_map(&tete_lecture) != 0)
+    {
+        printf("❌ Error: Invalid content after the map\n");
+        free(line);
+        return; // Arrêter le traitement si des erreurs sont trouvées
+    }
     free(line);
 }
 
@@ -131,9 +137,7 @@ int check_map_file(t_map *maps, char **av)
     if (read_file(maps, fd) == 1)
     {
 
-        is_valid_borders(maps);
-        check_all_conditions(maps);
-        check_N_S_W_E_elements(maps);
+        // check_after_map_is_clean(fd);
         printf("Map configuration and data parsed successfully\n");
     }
     else
@@ -143,7 +147,9 @@ int check_map_file(t_map *maps, char **av)
         free_map(maps);
         return (EXIT_FAILURE);
     }
-    check_after_map_is_clean(fd);
+    // is_valid_borders(maps);
+    // check_all_conditions(maps);
+    // check_N_S_W_E_elements(maps);
     // check_after_map_is_clean(&reader);
 
     close(fd);
