@@ -90,11 +90,9 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 
 int read_file(t_map *maps, int fd)
 {
-
     t_obj_reader tete_lecture;
- 
     char line[4096];
- 
+
     tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     if (!maps)
     {
@@ -131,7 +129,13 @@ int check_map_file(t_map *maps, char **av)
         return (EXIT_FAILURE);
     }
     if (read_file(maps, fd) == 1)
+    {
+
+        is_valid_borders(maps);
+        check_all_conditions(maps);
+        check_N_S_W_E_elements(maps);
         printf("Map configuration and data parsed successfully\n");
+    }
     else
     {
         printf("Error reading map data\n");
@@ -139,9 +143,9 @@ int check_map_file(t_map *maps, char **av)
         free_map(maps);
         return (EXIT_FAILURE);
     }
-    is_valid_borders(maps);
-    check_all_conditions(maps);
-    check_N_S_W_E_elements(maps);
+    check_after_map_is_clean(fd);
+    // check_after_map_is_clean(&reader);
+
     close(fd);
     free_map(maps);
     return (EXIT_SUCCESS);

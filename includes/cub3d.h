@@ -28,9 +28,10 @@ typedef struct s_map
     char *we;
     char *ea;
     char **grid;
+	char *is_empty_line;
     int width;
     int height;
-    int index_for_free;
+
     t_color floor_color;
     t_color ceiling_color;
 
@@ -56,6 +57,8 @@ void is_valid_borders(t_map *maps);
 void check_all_conditions(t_map *maps);
 void free_map(t_map *map);
 void check_N_S_W_E_elements(t_map *maps);
+void check_after_map_is_clean(int fd);
+
 
 int read_file(t_map *maps, int fd);
 

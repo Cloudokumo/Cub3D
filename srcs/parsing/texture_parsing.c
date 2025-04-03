@@ -35,7 +35,7 @@ char *read_string(t_obj_reader *reader)
 
 
 
-int parse_map_config(t_obj_reader *reader, t_map *map/* , char *line, int fd */)
+int parse_map_config(t_obj_reader *reader, t_map *map)
 {
     int16_t c;
     char *type;
