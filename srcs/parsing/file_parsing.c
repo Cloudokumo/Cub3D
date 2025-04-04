@@ -21,21 +21,51 @@ void print_map(t_map *maps, int i)
     }
 }
 
-char *read_string_map(t_obj_reader *reader)
+char *read_string_map(t_obj_reader *reader, int flag)
 {
     char *str = NULL;
     size_t len = 0;
     int16_t c;
     char temp[1024];
 
-    skip_whitespace(reader);
-    while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+    if (flag == 0)
     {
-        if (len < sizeof(temp) - 1)
-            temp[len++] = c;
-        obj_reader_next(reader);
-        if (c == '\0')
-            break;
+        skip_whitespace_map(reader);
+        while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+        {
+            if (len < sizeof(temp) - 1)
+                temp[len++] = c;
+            obj_reader_next(reader);
+            if (c == '\0')
+                break;
+            if (c == '\n' && len == 0)
+                break;
+        }
+    }
+    else
+    {
+        skip_whitespace_map(reader);
+        c = obj_reader_peek(reader);
+        while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+        {
+            // printf("%c \n", c);
+            if (len < sizeof(temp) - 1)
+                temp[len++] = c;
+            obj_reader_next(reader);
+            if (c == '\0')
+                break;
+        }
+        if (c == '\n')
+        {
+            obj_reader_next(reader);
+            printf("here \n");
+
+            if ((c = obj_reader_peek(reader)) == '\n')
+            {
+                obj_reader_next(reader);
+                printf("1here error \n");
+            }
+        }
     }
     if (len == 0)
         return NULL;
@@ -71,26 +101,26 @@ void create_line_of_map(t_map *maps, char *line, int i)
 void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
     int i = 0;
+    int flag;
 
-    line = read_string_map(&tete_lecture);
+    flag = 0;
+    line = read_string_map(&tete_lecture, flag);
     if (!line)
     {
         printf("file is empty");
         return;
     }
+    flag = 1;
     maps->width = ft_strlen(line);
     while (line && line[0] != '\0')
     {
         create_line_of_map(maps, line, i);
         i++;
-        line = read_string_map(&tete_lecture);
+        line = read_string_map(&tete_lecture, flag);
     }
-    if (skip_whitespace_after_map(&tete_lecture) != 0)
-    {
-        printf("❌ Error: Invalid content after the map\n");
-        free(line);
-        return; // Arrêter le traitement si des erreurs sont trouvées
-    }
+    printf("width : %d\n", maps->width);
+    printf("height : %d\n", maps->height);
+
     free(line);
 }
 
@@ -136,7 +166,9 @@ int check_map_file(t_map *maps, char **av)
     }
     if (read_file(maps, fd) == 1)
     {
-
+        is_valid_borders(maps);
+        check_all_conditions(maps);
+        check_N_S_W_E_elements(maps);
         // check_after_map_is_clean(fd);
         printf("Map configuration and data parsed successfully\n");
     }
@@ -147,10 +179,6 @@ int check_map_file(t_map *maps, char **av)
         free_map(maps);
         return (EXIT_FAILURE);
     }
-    // is_valid_borders(maps);
-    // check_all_conditions(maps);
-    // check_N_S_W_E_elements(maps);
-    // check_after_map_is_clean(&reader);
 
     close(fd);
     free_map(maps);

@@ -8,52 +8,41 @@ void is_valid_borders(t_map *maps)
 	while (i < maps->width)
 	{
 		if (maps->grid[0][i] != '1')
-			printf("H :Map edges are invalid. [%d][%d]: %c.\n", i, 0, maps->grid[i][0]);
+		{
+			printf("H :Map edges are invalid. [%d][%d]: %c.\n", 0, i, maps->grid[0][i]);
+			break;
+		}
 		else if (maps->grid[maps->height - 1][i] != '1')
-			printf("B: Map edges are invalid.[%d][%d]: %c\n", i, 0, maps->grid[i][0]);
-		// else
-		// 	printf("H et B :Map edges are valid.\n");
+		{
+			printf("B: Map edges are invalid.[%d][%d]: %c#\n", maps->height - 1, 0, maps->grid[maps->height - 1][i]);
+			break;
+		}
+		// 	else
+		// 		printf("H et B :Map edges are valid.\n");
+		// }
 		i++;
 	}
 	i = 0;
 	while (i < maps->height)
 	{
 		if (maps->grid[i][0] != '1')
-			printf("G: Map edges are invalid, [%d][%d]: %c.\n", i, 0, maps->grid[i][0]);
+		{
+			printf("G: Map edges are invalid, [%d][%d]: %c*.\n", i, 0, maps->grid[i][0]);
+			break;
+			// return;
+		}
 		else if (maps->grid[i][maps->width - 1] != '1')
-			printf("D: Map edges are invalid.[%d][%d]: %c\n", i, 0, maps->grid[i][0]);
+		{
+			printf("D: Map edges are invalid.[%d][%d]: %c^\n", i, maps->width - 1, maps->grid[i][maps->width - 1]);
+			break;
+			// return;
+		}
 		// else
 		// 	printf("G et D: Map edges are valid.\n");
 		i++;
 	}
 }
-// void is_valid_borders(t_map *maps)
-// {
-// 	int i;
 
-// 	i = 0;
-// 	while (i < maps->width)
-// 	{
-// 		if (maps->grid[0][i] != '1')
-// 			printf("H :Map edges are invalid.\n");
-// 		else if (maps->grid[maps->height - 1][i] != '1')
-// 			printf("B: Map edges are invalid.\n");
-// 		// else
-// 		// printf("H et B :Map edges are valid.\n");
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (i < maps->height)
-// 	{
-// 		if (maps->grid[i][0] != '1')
-// 			printf("G: Map edges are invalid.\n");
-// 		else if (maps->grid[i][maps->width - 1] != '1')
-// 			printf("D: Map edges are invalid.\n");
-// 		// else
-// 		//     printf("G et D: Map edges are valid.\n");
-// 		i++;
-// 	}
-// }
 
 void check_all_conditions(t_map *maps)
 {
@@ -67,7 +56,13 @@ void check_all_conditions(t_map *maps)
 		while (maps->grid[j][i])
 		{
 			if (!ft_strchr("10NSWE", maps->grid[j][i]))
-				printf("Other characters than 1 0 were found");
+			{
+				printf("Other characters than 1 0 were found\n");
+				printf(" Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
+				// return;
+				break;
+			}
+
 			i++;
 		}
 		j++;
@@ -103,29 +98,35 @@ void check_N_S_W_E_elements(t_map *maps)
 	printf("nb d'element 'NSWE' est 1\n");
 }
 
-int skip_whitespace_after_map(t_obj_reader *reader)
+/* int skip_whitespace_after_map(t_obj_reader *reader)
 {
-    int16_t c;
+	int16_t c;
 
-    // Tant que nous n'avons pas atteint la fin du fichier
-    while ((c = obj_reader_peek(reader)) != -1)
-    {
-        // Si c'est un caractère blanc, on l'ignore
-        if (c == ' ' || c == '\t' || c == '\n')
-        {
-            obj_reader_next(reader); // Avancer au prochain caractère
-        }
-        // Si c'est un caractère non blanc et non valide, on renvoie une erreur
-        else if (c != ' ' && c != '\t' && c != '\n')
-        {
-            printf("❌❌ Error: Invalid character '%c' found after the map\n", c);
-            return -1; // Retourner une erreur
-        }
-    }
+	// Tant que nous n'avons pas atteint la fin du fichier
+	while ((c = obj_reader_peek(reader)) != -1)
+	{
+		// Si c'est un caractère blanc, on l'ignore
+		// if (c == ' ' || c == '\t' || c == '\n')
+		// {
+		//     obj_reader_next(reader); // Avancer au prochain caractère
+		// }
+		// Si c'est un caractère non blanc et non valide, on renvoie une erreur
+		if (c == '\0')
+		{
+			obj_reader_next(reader); // Avancer au prochain caractère
+			break; // Sortir de la boucle
+		}
+		if (c != ' ' && c != '\t' && c != '\n' && c == '\0')
+		{
+			printf("❌❌ Error: Invalid character '*%c*' found after the map\n", c);
+			return -1; // Retourner une erreur
+		}
+		obj_reader_next(reader);
+	}
 
-    // Fin du fichier atteint sans erreurs
-    return 0;
-}
+	// Fin du fichier atteint sans erreurs
+	return 0;
+} */
 // void check_after_map_is_clean(int fd)
 // {
 // 	if (skip_whitespace_after_map(fd) != -1) // Si on trouve un caractère non blanc
@@ -137,4 +138,3 @@ int skip_whitespace_after_map(t_obj_reader *reader)
 // 	// 	obj_reader_next(fd);
 // 	printf("✅ No extra content after the map!\n");
 // }
-
