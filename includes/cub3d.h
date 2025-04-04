@@ -28,7 +28,7 @@ typedef struct s_map
     char *we;
     char *ea;
     char **grid;
-	char *is_empty_line;
+    char *is_empty_line;
     int width;
     int height;
 
@@ -58,17 +58,17 @@ void is_valid_borders(t_map *maps);
 void check_all_conditions(t_map *maps);
 void free_map(t_map *map);
 void check_N_S_W_E_elements(t_map *maps);
-void	call_flood_fill(t_map *maps);
-
+void call_flood_fill(t_map *maps);
+int check_next_step(t_map *maps, int y, int x);
 
 int read_file(t_map *maps, int fd);
-
+int ft_len(const char *s);
 
 int skip_whitespace(t_obj_reader *reader);
 char *read_string(t_obj_reader *reader);
 int parse_map_config(t_obj_reader *reader, t_map *map);
 int parse_color(t_obj_reader *reader, t_color *color);
-char   *get_color_values(char *str, int j);
+char *get_color_values(char *str, int j);
 int check_values(int value);
 
 #endif

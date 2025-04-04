@@ -1,5 +1,16 @@
 #include "cub3d.h"
 
+int ft_len(const char *s)
+{
+	int i;
+
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
+}
 char **duplicate_grid(t_map *maps)
 {
 	char **tab;
@@ -28,18 +39,32 @@ char **duplicate_grid(t_map *maps)
 	return (tab);
 }
 
-void	flood_fill(t_map *maps, int j, int i, char **empty_tab)
+int flood_fill(t_map *maps, int j, int i, char **empty_tab)
 {
-	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width || empty_tab[j][i] == 'X' || maps->grid[j][i] == '1')
-		return ;
-
+	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width )
+		return (1);
+	if (empty_tab[j][i] && (empty_tab[j][i] == 'X' || empty_tab[j][i] == '1'))
+		return (0);
 	empty_tab[j][i] = 'X';
-	flood_fill(maps, j, i - 1, empty_tab);
-	flood_fill(maps, j, i + 1, empty_tab);
-	flood_fill(maps, j - 1, i, empty_tab);
-	flood_fill(maps, j + 1, i, empty_tab);
+	if (!check_next_step(maps, j, i)
+		&& (empty_tab[j][i - 1] && flood_fill(maps, j, i - 1, empty_tab) == 0)
+		&& (empty_tab[j][i + 1] && flood_fill(maps, j, i + 1, empty_tab) == 0)
+		&& (empty_tab[j - 1][i] && flood_fill(maps, j - 1, i, empty_tab) == 0 )
+		&& (empty_tab[j + 1][i] &&flood_fill(maps, j + 1, i, empty_tab) == 0))
+		{
+			return (0);
+		}
+	else
+		return (1);
+	return (0);
 }
 
+int check_next_step(t_map *maps, int y, int x)
+{
+	if ((maps->grid[y] && maps->grid[y][x + 1]) && (x != 0 && maps->grid[y][x - 1]) && (maps->grid[y + 1] && maps->grid[y + 1][0] && x <= ft_len(maps->grid[y + 1])) && (y != 0 && x <= ft_len(maps->grid[y - 1]) && maps->grid[y - 1][0]))
+		return (0);
+	return (1);
+}
 void call_flood_fill(t_map *maps)
 {
 	char **new_grid;
@@ -54,8 +79,8 @@ void call_flood_fill(t_map *maps)
 		while (maps->grid[j][i])
 		{
 			if (/* maps->grid[j][i] == 'P' */ ft_strchr("NSWE", maps->grid[j][i]))
-				flood_fill(maps, j, i, new_grid);
-
+				if (flood_fill(maps, j, i, new_grid))
+					printf("Flood fill failed\n");
 			i++;
 		}
 		j++;
