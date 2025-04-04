@@ -55,12 +55,12 @@ void check_all_conditions(t_map *maps)
 		i = 0;
 		while (maps->grid[j][i])
 		{
-			if (!ft_strchr("10NSWE", maps->grid[j][i]))
+			if (!ft_strchr("10NSWE ", maps->grid[j][i]))
 			{
 				printf("Other characters than 1 0 were found\n");
 				printf(" Element found[%d][%d]: %c\n", j, i, maps->grid[j][i]);
-				// return;
-				break;
+				return;
+				// break;
 			}
 
 			i++;

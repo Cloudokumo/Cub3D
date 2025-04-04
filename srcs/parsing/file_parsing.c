@@ -55,17 +55,6 @@ char *read_string_map(t_obj_reader *reader, int flag)
             if (c == '\0')
                 break;
         }
-        if (c == '\n')
-        {
-            obj_reader_next(reader);
-            printf("here \n");
-
-            if ((c = obj_reader_peek(reader)) == '\n')
-            {
-                obj_reader_next(reader);
-                printf("1here error \n");
-            }
-        }
     }
     if (len == 0)
         return NULL;
@@ -102,6 +91,7 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
     int i = 0;
     int flag;
+    char c;
 
     flag = 0;
     line = read_string_map(&tete_lecture, flag);
@@ -115,6 +105,17 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
     while (line && line[0] != '\0')
     {
         create_line_of_map(maps, line, i);
+        if ((c = obj_reader_peek(&tete_lecture)) == '\n')
+        {
+            obj_reader_next(&tete_lecture);
+            printf("here \n");
+
+            if ((c = obj_reader_peek(&tete_lecture)) == '\n')
+            {
+                printf("end of map\n");
+                return;
+            }
+        }
         i++;
         line = read_string_map(&tete_lecture, flag);
     }
@@ -166,11 +167,13 @@ int check_map_file(t_map *maps, char **av)
     }
     if (read_file(maps, fd) == 1)
     {
-        is_valid_borders(maps);
+        // is_valid_borders(maps);
         check_all_conditions(maps);
         check_N_S_W_E_elements(maps);
+        call_flood_fill(maps);
+
         // check_after_map_is_clean(fd);
-        printf("Map configuration and data parsed successfully\n");
+        // printf("Map configuration and data parsed successfully\n");
     }
     else
     {
