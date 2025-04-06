@@ -11,9 +11,10 @@ int parse_color(t_obj_reader *reader, t_color *color)
     j = 0;
     i = 0;
     skip_whitespace(reader);
-    num_str = read_string(reader);
+    num_str = read_string_map(reader, 0);
     if (!num_str) 
         return 0;
+    printf("%saa\n", num_str);
     values[0] = atoi(num_str);
     while (++i <= 2) 
     {
@@ -36,11 +37,13 @@ int parse_color(t_obj_reader *reader, t_color *color)
         i++;
     }
     color->r = values[0];
+    printf("%d color\n", values[0]);
     color->g = values[1];
+    printf("%d color\n", values[1]);
     color->b = values[2];
+    printf("%d color\n", values[2]);
     return 1;
 }
-
 
 int check_values(int value)
 {
