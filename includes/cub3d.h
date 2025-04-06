@@ -69,6 +69,7 @@ char *read_string(t_obj_reader *reader);
 int parse_map_config(t_obj_reader *reader, t_map *map);
 int parse_color(t_obj_reader *reader, t_color *color);
 char *get_color_values(char *str, int j);
+int parse_color_element(t_obj_reader *reader, t_color *color, int *found);
 int check_values(int value);
 
 #endif

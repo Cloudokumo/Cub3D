@@ -52,8 +52,6 @@ int check_values(int value)
     return EXIT_FAILURE;
 }
 
-
-
 char   *get_color_values(char *str, int j)
 {
     int i;
@@ -72,4 +70,17 @@ char   *get_color_values(char *str, int j)
     nbr[u] = '\0';
     printf("%s nbr\n", nbr);
     return (nbr);
+}
+
+int parse_color_element(t_obj_reader *reader, t_color *color, int *found)
+{
+    if (*found)
+    {
+        printf("Error: Duplicate color\n");
+        return (0);
+    }
+    if (!parse_color(reader, color))
+        return (0);
+    *found = 1;
+    return (1);
 }
