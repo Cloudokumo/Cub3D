@@ -98,43 +98,25 @@ void check_N_S_W_E_elements(t_map *maps)
 	printf("nb d'element 'NSWE' est 1\n");
 }
 
-/* int skip_whitespace_after_map(t_obj_reader *reader)
-{
-	int16_t c;
+//si fichier vide ->obligatoire "Error", avec un autre msg
+//si fichier invalide -> obligatoire "Error", avec un autre msg
+//si ya pas de joueur -> obligatoire "Error", avec un autre msg
+//si map trop petite (que des 1 ou 0), consideree comme pas de joueur-> obligatoire "Error", avec un autre msg
+//si map pas complètement entoure de murs -> obligatoire "Error", avec un autre msg
+//si ya des lignes vides -> obligatoire "Error", avec un autre msg
+//si ya des caracteres autres que 1, 0, N, S, E, W -> obligatoire "Error", avec un autre msg
+//si ya double player -> obligatoire "Error", avec un autre msg
+//si ya pas de map -> obligatoire "Error", avec un autre msg
+//si ya pas de texture -> obligatoire "Error", avec un autre msg
+//si ya pas de couleur -> obligatoire "Error", avec un autre msg
+//si la map pas en derniere position -> obligatoire "Error", avec un autre msg
+//si player sur ligne de bordure -> obligatoire "Error", avec un autre msg
+//si pas le bon extension ou mauvais extension -> obligatoire "Error", avec un autre msg
+//si la map est bien entoure de murs , et que ya des '1' et '0' en dehors -> c'est bon
+//si map en derniere position et que ya espace vide apres -> c'est bon
 
-	// Tant que nous n'avons pas atteint la fin du fichier
-	while ((c = obj_reader_peek(reader)) != -1)
-	{
-		// Si c'est un caractère blanc, on l'ignore
-		// if (c == ' ' || c == '\t' || c == '\n')
-		// {
-		//     obj_reader_next(reader); // Avancer au prochain caractère
-		// }
-		// Si c'est un caractère non blanc et non valide, on renvoie une erreur
-		if (c == '\0')
-		{
-			obj_reader_next(reader); // Avancer au prochain caractère
-			break; // Sortir de la boucle
-		}
-		if (c != ' ' && c != '\t' && c != '\n' && c == '\0')
-		{
-			printf("❌❌ Error: Invalid character '*%c*' found after the map\n", c);
-			return -1; // Retourner une erreur
-		}
-		obj_reader_next(reader);
-	}
+//a check la fin de la map avec '\n' '\t' ' ', c'est bizarre
 
-	// Fin du fichier atteint sans erreurs
-	return 0;
-} */
-// void check_after_map_is_clean(int fd)
-// {
-// 	if (skip_whitespace_after_map(fd) != -1) // Si on trouve un caractère non blanc
-// 	{
-// 		printf("❌❌ Error: Unexpected content after map\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	// while (obj_reader_peek(fd) != -1)
-// 	// 	obj_reader_next(fd);
-// 	printf("✅ No extra content after the map!\n");
-// }
+//a voir comment faire quand ya '\t' et ' ' :
+///quand c'est une ligne vide ca doit envoyer erreur
+///quand c'est non vide ca doit pas envoyer erreur
