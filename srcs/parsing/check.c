@@ -1,48 +1,5 @@
 #include "cub3d.h"
 
-void is_valid_borders(t_map *maps)
-{
-	int i;
-
-	i = 0;
-	while (i < maps->width)
-	{
-		if (maps->grid[0][i] != '1')
-		{
-			printf("H :Map edges are invalid. [%d][%d]: %c.\n", 0, i, maps->grid[0][i]);
-			break;
-		}
-		else if (maps->grid[maps->height - 1][i] != '1')
-		{
-			printf("B: Map edges are invalid.[%d][%d]: %c#\n", maps->height - 1, 0, maps->grid[maps->height - 1][i]);
-			break;
-		}
-		// 	else
-		// 		printf("H et B :Map edges are valid.\n");
-		// }
-		i++;
-	}
-	i = 0;
-	while (i < maps->height)
-	{
-		if (maps->grid[i][0] != '1')
-		{
-			printf("G: Map edges are invalid, [%d][%d]: %c*.\n", i, 0, maps->grid[i][0]);
-			break;
-			// return;
-		}
-		else if (maps->grid[i][maps->width - 1] != '1')
-		{
-			printf("D: Map edges are invalid.[%d][%d]: %c^\n", i, maps->width - 1, maps->grid[i][maps->width - 1]);
-			break;
-			// return;
-		}
-		// else
-		// 	printf("G et D: Map edges are valid.\n");
-		i++;
-	}
-}
-
 
 void check_all_conditions(t_map *maps)
 {

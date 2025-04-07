@@ -67,18 +67,20 @@ void create_line_of_map(t_map *maps, char *line, int i)
 {
     maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
     if (!maps->grid)
-    {
-        printf("Erreur d'allocation pour maps->grid\n");
-        free_map(maps);
-        return;
-    }
+        ft_clean_up(maps, 0, "Allocation failed for maps->grid");
+    // {
+    //     printf("Erreur d'allocation pour maps->grid");
+    //     free_map(maps);
+    //     return;
+    // }
     maps->grid[i] = ft_strdup(line);
     if (!maps->grid[i])
-    {
-        printf("Erreur d'allocation pour maps->grid[%d]\n", i);
-        free_map(maps);
-        return;
-    }
+        ft_clean_up(maps, 0, "Allocation failed for maps->grid[i]");
+    // {
+    //     printf("Erreur d'allocation pour maps->grid[%d]\n", i);
+    //     free_map(maps);
+    //     return;
+    // }
     maps->height++;
     free(line);
     printf("[%d] : %s\n", i, maps->grid[i]);
@@ -106,10 +108,11 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
     // flag = 0;
     line = read_string_map(&tete_lecture/* , flag */);
     if (!line)
-    {
-        printf("file is empty");
-        return;
-    }
+        ft_clean_up(maps, 0, "No existing map");
+    // {
+    //     printf("file is empty");
+    //     return;
+    // }
     // flag = 1;
     // maps->width = ft_strlen(line);
     while (line && line[0] != '\0')
