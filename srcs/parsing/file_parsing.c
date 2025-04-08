@@ -21,62 +21,105 @@ void print_map(t_map *maps, int i)
     }
 }
 
+char *read_string_map(t_obj_reader *reader /* , int flag */)
+{
+    char *str = NULL;
+    size_t len = 0;
+    int16_t c;
+    char temp[1024];
+
+    // if (flag == 0)
+    // {
+    skip_whitespace_map(reader);
+    while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+    {
+        if (len < sizeof(temp) - 1)
+            temp[len++] = c;
+        obj_reader_next(reader);
+        if (c == '\0')
+            break;
+    }
+    if (len == 0)
+    return NULL;
+    str = malloc((len + 1) * sizeof(char));
+    if (!str)
+    return NULL;
+    ft_memcpy(str, temp, len);
+    str[len] = '\0';
+    return str;
+}
+// }
+// else
+// {
+//     skip_whitespace_map(reader);
+//     c = obj_reader_peek(reader);
+//     while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+//     {
+//         if (len < sizeof(temp) - 1)
+//             temp[len++] = c;
+//         obj_reader_next(reader);
+//         if (c == '\0')
+//             break;
+//     }
+// }
+
 void create_line_of_map(t_map *maps, char *line, int i)
 {
     maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i + 2));
     if (!maps->grid)
-    {
-        printf("Erreur d'allocation pour maps->grid\n");
-        free_map(maps);
-        return;
-    }
+        ft_clean_up(maps, 0, "Allocation failed for maps->grid");
     maps->grid[i] = ft_strdup(line);
     if (!maps->grid[i])
-    {
-        printf("Erreur d'allocation pour maps->grid[%d]\n", i);
-        free_map(maps);
-        return;
-    }
+        ft_clean_up(maps, 0, "Allocation failed for maps->grid[i]");
     maps->height++;
     free(line);
     printf("[%d] : %s\n", i, maps->grid[i]);
 }
+void find_max_width(t_map *maps)
+{
+    int max_width = 0;
+    int i = 0;
 
+    if (!maps->grid)
+        return;
+    while (maps->grid[i])
+    {
+        int width = ft_strlen(maps->grid[i]);
+        if (width > max_width)
+            max_width = width;
+        i++;
+    }
+    maps->width = max_width;
+}
 void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
     int i = 0;
-    int flag;
+    // int flag;
     char c;
 
-    flag = 0;
-    line = read_string_map(&tete_lecture, flag);
-    if (!line)
+    // flag = 0;
+    line = read_string_map(&tete_lecture /* , flag */);
+    if (line[0] == '\0')
     {
-        printf("file is empty");
-        return;
+        free(line);
+        ft_clean_up(maps, 0, "No existing map");
     }
-    flag = 1;
-    maps->width = ft_strlen(line);
+    // flag = 1;
+    // maps->width = ft_strlen(line);
     while (line && line[0] != '\0')
     {
         create_line_of_map(maps, line, i);
         if ((c = obj_reader_peek(&tete_lecture)) == '\n')
         {
             obj_reader_next(&tete_lecture);
-            printf("here \n");
-
-            if ((c = obj_reader_peek(&tete_lecture)) == '\n')
-            {
-                printf("end of map\n");
-                return;
-            }
+            // printf("here \n");
+            if ((c = obj_reader_peek(&tete_lecture)) == '\n' /*  || c == '\t' || c == ' ' || c == '\0' */)
+                ft_clean_up(maps, 0, "Empty line in map");
         }
         i++;
-        line = read_string_map(&tete_lecture, flag);
+        line = read_string_map(&tete_lecture /* , flag */);
     }
-    printf("width : %d\n", maps->width);
-    printf("height : %d\n", maps->height);
-
+    find_max_width(maps);
     free(line);
 }
 
@@ -87,14 +130,19 @@ int read_file(t_map *maps, int fd)
 
     tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
     if (!maps)
-    {
-        printf("Erreur : maps est NULL\n");
-        return (0);
-    }
+        ft_clean_up(maps, 0, "Map is NULL"); // peut etre inutile
     fill_the_grid(maps, tete_lecture, line);
     return (1);
 }
+// {
+//     printf("Wrong file extension\n");
+//     return (EXIT_FAILURE);
+// }
 
+// {
+//     printf("No file found");
+//     return (EXIT_FAILURE);
+// }
 int check_map_file(t_map *maps, char **av)
 {
     int fd;
@@ -102,82 +150,52 @@ int check_map_file(t_map *maps, char **av)
     char buffer[BUFFER_SIZE];
 
     if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
-    {
-        printf("Wrong file extension\n");
-        return (EXIT_FAILURE);
-    }
+        ft_clean_up(maps, 0, "Wrong file extension");
     fd = open(av[1], O_RDONLY);
     if (fd < 0)
-    {
-        printf("No file found");
-        return (EXIT_FAILURE);
-    }
+        ft_clean_up(maps, 0, "No file found");
     reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
     if (!parse_map_config(&reader, maps))
+        ft_clean_up(maps, 0, "Error parsing map configuration");
+    if (!read_file(maps, fd))
     {
-        printf("Error parsing map configuration\n");
         close(fd);
-        free_map(maps);
-        return (EXIT_FAILURE);
+        ft_clean_up(maps, 0, "Error reading map data");
     }
-    if (read_file(maps, fd) == 1)
-    {
-        // is_valid_borders(maps);
-        check_all_conditions(maps);
-        check_N_S_W_E_elements(maps);
-        call_flood_fill(maps);
-
-        // check_after_map_is_clean(fd);
-        // printf("Map configuration and data parsed successfully\n");
-    }
-    else
-    {
-        printf("Error reading map data\n");
-        close(fd);
-        free_map(maps);
-        return (EXIT_FAILURE);
-    }
-
+    check_all_conditions(maps);
+    check_N_S_W_E_elements(maps);
+    call_flood_fill(maps);
     close(fd);
-    free_map(maps);
-    return (EXIT_SUCCESS);
+    ft_clean_up(maps, 1, "Map configuration and data parsed successfully");
+    return (1);
 }
+// if (read_file(maps, fd) == 1)
+// {
+//     check_all_conditions(maps);
+//     check_N_S_W_E_elements(maps);
+//     call_flood_fill(maps);
+//     close(fd);
+//     ft_clean_up(maps, 1, "Map configuration and data parsed successfully");
+// }
+// else
+// {
+//     close(fd);
+//     ft_clean_up(maps, 0, "Error reading map data");
+// }
+// return (EXIT_SUCCESS);
 
-/*  line = check_end_of_line(line, fd);
- if (!line)
-    printf("file is empty");
- while (line = get_next_line(fd))
- {
-     if (is_map(line) != 0)
-     {
-         get_texture(line);
-         get_color(line);
-     }
- } */
+// {
+//     printf("Error parsing map configuration\n");
+//     close(fd);
+//     free_map(maps);
+//     return (EXIT_FAILURE);
+// }
 
-// VERSION 1
-// Premiere examination de la map
-
-// lire chaque ligne
-
-/// si ya des lignes avant check si c'est que des "1" avant le mur d'extremite (haut de map)
-/// check si c'est la derniere ligne avec que des "1" (au debut, pour savoir l'extremite du haut de map)
-////(si oui prendre cette longueur en tant que max par defaut)
-
-///(continuer de prendre la longueur des lignes suivante et check si plus long que celle par defaut
-/// si oui, le maj en tant que la ligne la plus longue)
-
-/// check si c'est la premiere ligne avec que des "1" (a la fin, pour savoir l'extremite du bas de map)
-/// si ya des lignes apres check si c'est que des "1" apres le mur d'extremite (bas de map)
-
-// Deuxieme examination de la map
-
-// lire ligne par ligne
-
-///(check si la longueur de la ligne est inf ou egal a la longueur max(connu avec la premiere examination)
-////si plus petit complete les espaces "vide" avec des "1", pour les considerer comme des murs)
-// si haut de map( extremite du haut) n'est pas que des "1", tout arreter et afficher un msg d'erreur
-
-// check le milieu de map si c'est que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
-/// check si en dehors des 2 extremites c'est que des "1"
-/// check a l'interieur des 2 extremites si cest que des "1" et "0" et si ya "N","S", "W", "E" (si oui le marque qq part sinon continue)
+// {
+//     printf("Error reading map data\n");
+//     close(fd);
+//     free_map(maps);
+//     return (EXIT_FAILURE);
+// }
+// close(fd);
+// free_map(maps);
