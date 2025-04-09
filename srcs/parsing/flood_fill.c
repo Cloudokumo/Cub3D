@@ -34,10 +34,13 @@ int flood_fill(t_map *maps, int j, int i, char **new_grid)
 {
 	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width)
 		return (0);
-	if (new_grid[j][i] == 'X' || new_grid[j][i] == '1')
+	if (new_grid[j][i] == ' ' || new_grid[j][i] == '\t')
+	{
+		new_grid[j][i] = '1';
+	}
+	if (new_grid[j][i] == 'X' || new_grid[j][i]  == '1')
 		return (1);
 	new_grid[j][i] = 'X';
-
 	if (check_next_step(maps, j, i) && flood_fill(maps, j, i - 1, new_grid) && flood_fill(maps, j, i + 1, new_grid) && flood_fill(maps, j - 1, i, new_grid) && flood_fill(maps, j + 1, i, new_grid))
 		return (1);
 	return (0);

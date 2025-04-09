@@ -14,8 +14,8 @@ int main(int ac, char **av)
     ft_memset(&game, 0, sizeof(t_game));
     if (check_map_file(&maps, av) != 1)
         return (1);
-    if (init_game(&game, &maps) == 1)
-        return (1);
+    // if (init_game(&game, &maps) == 1)
+    //     return (1);
     
     return (0);
 }
