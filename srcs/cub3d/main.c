@@ -3,6 +3,7 @@
 int main(int ac, char **av)
 {
     t_map maps;
+    t_game game;
 
     if (ac != 2)
     {
@@ -10,6 +11,11 @@ int main(int ac, char **av)
         return (0);
     }
     ft_memset(&maps, 0, sizeof(maps));
-    check_map_file(&maps, av);
+    ft_memset(&game, 0, sizeof(t_game));
+    if (check_map_file(&maps, av) != 1)
+        return (1);
+    if (init_game(&game, &maps) == 1)
+        return (1);
+    
     return (0);
 }

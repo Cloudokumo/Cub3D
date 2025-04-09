@@ -1,16 +1,5 @@
 #include "cub3d.h"
 
-// int ft_len(const char *s)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		i++;
-// 	}
-// 	return (i);
-// }
 char **duplicate_grid(t_map *maps)
 {
 	char **tab;
@@ -40,6 +29,7 @@ char **duplicate_grid(t_map *maps)
 	tab[j] = NULL;
 	return (tab);
 }
+
 int flood_fill(t_map *maps, int j, int i, char **new_grid)
 {
 	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width)

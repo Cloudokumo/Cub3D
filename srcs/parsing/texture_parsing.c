@@ -106,7 +106,6 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
         type = read_string(reader);
         if (!type)
             break;
-        printf("%s i see\n", type);
         if (!process_element(reader, map, type, found))
         {
             free(type);

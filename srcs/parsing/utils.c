@@ -43,3 +43,31 @@ char *read_string(t_obj_reader *reader)
     printf("%s yes\n", str);
     return str;
 }
+
+char *read_string_map(t_obj_reader *reader)
+{
+    char *str;
+    size_t len;
+    int16_t c;
+    char temp[1024];
+
+    str = NULL;
+    len = 0;
+    skip_whitespace_map(reader);
+    while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+    {
+        if (len < sizeof(temp) - 1)
+            temp[len++] = c;
+        obj_reader_next(reader);
+        if (c == '\0')
+            break;
+    }
+    if (len == 0)
+    return NULL;
+    str = malloc((len + 1) * sizeof(char));
+    if (!str)
+    return NULL;
+    ft_memcpy(str, temp, len);
+    str[len] = '\0';
+    return str;
+}
