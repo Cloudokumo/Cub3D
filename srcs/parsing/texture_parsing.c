@@ -1,7 +1,31 @@
 #include "cub3d.h"
 
+static int is_valid_texture_path(const char *path)
+{
+    int fd;
+    int len;
+    
+    if (!path)
+        return (0);
+    len = ft_strlen(path);
+    if (len < 5 || ft_strcmp(path + len - 4, ".xpm") != 0)
+    {
+        printf("Error: Texture file must have .xpm extension: %s\n", path);
+        return (0);
+    }
+    fd = open(path, O_RDONLY);
+    if (fd < 0)
+    {
+        printf("Error: Cannot open texture file: %s\n", path);
+        return (0);
+    }
+    close(fd);
+    return (1);
+}
+
 static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
 {
+
     if (*found)
     {
         printf("Error: Duplicate texture\n");
@@ -10,9 +34,16 @@ static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
     *texture_ptr = read_string(reader);
     if (!*texture_ptr)
         return (0);
+    if (!is_valid_texture_path(*texture_ptr))
+    {
+        free(*texture_ptr);
+        *texture_ptr = NULL;
+        return (0);
+    }
     *found = 1;
     return (1);
 }
+
 
 static int process_element(t_obj_reader *reader, t_map *map, char *type,
                         int found[6])
@@ -92,46 +123,3 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
     }
     return (1);
 }
-// static int is_valid_texture_path(const char *path)
-// {
-//     int fd;
-//     int len;
-    
-//     if (!path)
-//         return (0);
-
-//     len = ft_strlen(path);
-//     if (len < 5 || ft_strcmp(path + len - 4, ".xpm") != 0)
-//     {
-//         printf("Error: Texture file must have .xpm extension: %s\n", path);
-//         return (0);
-//     }
-//     fd = open(path, O_RDONLY);
-//     if (fd < 0)
-//     {
-//         printf("Error: Cannot open texture file: %s\n", path);
-//         return (0);
-//     }
-//     close(fd);
-//     return (1);
-// }
-
-// static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
-// {
-//     if (*found)
-//     {
-//         printf("Error: Duplicate texture\n");
-//         return (0);
-//     }
-//     *texture_ptr = read_string(reader);
-//     if (!*texture_ptr)
-//         return (0);
-//     if (!is_valid_texture_path(*texture_ptr))
-//     {
-//         free(*texture_ptr);
-//         *texture_ptr = NULL;
-//         return (0);
-//     }
-//     *found = 1;
-//     return (1);
-// }

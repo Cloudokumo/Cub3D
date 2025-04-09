@@ -11,7 +11,7 @@ int parse_color(t_obj_reader *reader, t_color *color)
     j = 0;
     i = 0;
     skip_whitespace(reader);
-    num_str = read_string_map(reader, 0);
+    num_str = read_string_map(reader);
     if (!num_str) 
         return 0;
     printf("%saa\n", num_str);

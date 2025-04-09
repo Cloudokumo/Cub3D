@@ -1,49 +1,5 @@
 #include "cub3d.h"
 
-char *read_string_map(t_obj_reader *reader, int flag)
-{
-    char *str = NULL;
-    size_t len = 0;
-    int16_t c;
-    char temp[1024];
-
-    if (flag == 0)
-    {
-        skip_whitespace_map(reader);
-        while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
-        {
-            if (len < sizeof(temp) - 1)
-                temp[len++] = c;
-            obj_reader_next(reader);
-            if (c == '\0')
-                break;
-            if (c == '\n' && len == 0)
-                break;
-        }
-    }
-    else
-    {
-        skip_whitespace_map(reader);
-        c = obj_reader_peek(reader);
-        while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
-        {
-            // printf("%c \n", c);
-            if (len < sizeof(temp) - 1)
-                temp[len++] = c;
-            obj_reader_next(reader);
-            if (c == '\0')
-                break;
-        }
-    }
-    if (len == 0)
-        return NULL;
-    str = malloc(len + 1);
-    if (!str)
-        return NULL;
-    ft_memcpy(str, temp, len);
-    str[len] = '\0';
-    return str;
-}
 
 int skip_whitespace(t_obj_reader *reader)
 {
