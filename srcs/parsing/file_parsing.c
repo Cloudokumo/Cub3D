@@ -166,7 +166,7 @@ int check_map_file(t_map *maps, char **av)
     check_N_S_W_E_elements(maps);
     call_flood_fill(maps);
     close(fd);
-    ft_clean_up(maps, 1, "Map configuration and data parsed successfully");
+    ft_clean_up(maps, 1, "Map configuration and data parsed successfully");;
     return (1);
 }
 // if (read_file(maps, fd) == 1)

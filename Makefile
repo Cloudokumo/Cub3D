@@ -1,46 +1,41 @@
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
-# # -g -O2 -Iminilibx-linux
-# LDFLAGS	= -Lminilibx-linux -lmlx -lXext -lX11 -lm
-NAME 	= Cub3d
+CFLAGS	= -Wall -Wextra -Werror -g -O2 -Iminilibx-linux
+LDFLAGS	= -Lminilibx-linux -lmlx -LLibft -lft -lXext -lX11 -lm
+NAME 	= Cube3d
 ### DIRECTORIES ################################################################
 
 SRCS_DIR 	 = srcs
 SRCS_CUB3D 	 = $(SRCS_DIR)/cub3d
 SRCS_PARSING = $(SRCS_DIR)/parsing
+SRCS_EXEC    = $(SRCS_DIR)/exec
 
 OBJS_DIR 	= objs
 INCLUDES_DIR = includes
-INCLUDES_DIRS = -I$(INCLUDES_DIR) -I$(LIBFT_DIR)
+INCLUDES_DIRS = -I$(INCLUDES_DIR)
 
 ### SRC ########################################################################
 
-SRCS	= $(wildcard $(SRCS_CUB3D)/*.c) $(wildcard $(SRCS_PARSING)/*.c)
+SRCS	=	$(wildcard $(SRCS_CUB3D)/*.c) \
+			$(wildcard $(SRCS_PARSING)/*.c) \
+			$(wildcard $(SRCS_EXEC)/*.c)
 
 ### OBJS ###########################################################################
 
-OBJS	= $(patsubst $(SRCS_DIR)/%, $(OBJS_DIR)/%, $(SRCS:.c=.o))
-
-### LIBFT ###########################################################################
-
-LIBFT_DIR = ./Libft
-LIBFT = $(LIBFT_DIR)/libft.a
+OBJS	= $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
 
 ### MLX ###########################################################################
 
-# MLX_DIR = ./minilibx-linux
-# MLX_GIT = https://github.com/42Paris/minilibx-linux.git
-# MLX = $(MLX_DIR)/libmlx.a
+MLX_DIR = ./minilibx-linux
+MLX_GIT = https://github.com/42Paris/minilibx-linux.git
+MLX = $(MLX_DIR)/libmlx.a
 
 ### RULES ######################################a#####################################
 
-all :  $(NAME) $(MLX)
+all : $(MLX) $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(MLX)
-	@$(CC) $(OBJS) $(LIBFT) $(MLX) $(LDFLAGS) -o $(NAME)
-# $(MLX)
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
+$(NAME): $(OBJS) $(MLX)
+	@$(MAKE) -C ./Libft
+	@$(CC) $(OBJS) $(MLX) $(LDFLAGS) -o $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
@@ -51,15 +46,13 @@ $(MLX):
 	@$(MAKE) -C $(MLX_DIR)
 
 clean:
-	@rm -rf $(OBJS)
 	@rm -rf $(OBJS_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) clean
-# @$(MAKE) -C $(MLX_DIR) clean
+	@if [ -d $(MLX_DIR) ]; then $(MAKE) -C $(MLX_DIR) clean; fi
+	@$(MAKE) -C ./Libft clean
 
 fclean : clean
-	rm -f $(NAME)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
-# @$(MAKE) -C $(MLX_DIR) fclean
+	@rm -f $(NAME)
+	@$(MAKE) -C ./Libft fclean
 
 re : fclean all
 

@@ -25,8 +25,50 @@ void ft_clean_up(t_map *maps, int index, char *msg)
 	if (index == 1)
 	{
 		printf("%s\n", msg);
-		exit(EXIT_SUCCESS);
+		return ;
 	}
 	printf("Error\n%s\n", msg);
 	exit(EXIT_FAILURE);
+}
+
+void cleanup_game(t_game *game)
+{
+    int i;
+    
+    for (i = 0; i < 4; i++)
+    {
+        if (game->textures[i].img)
+            mlx_destroy_image(game->mlx.mlx, game->textures[i].img);
+    }
+    if (game->mlx.img)
+        mlx_destroy_image(game->mlx.mlx, game->mlx.img);
+    if (game->mlx.win)
+        mlx_destroy_window(game->mlx.mlx, game->mlx.win);
+}
+
+void cleanup_map(t_map *map)
+{
+    int i;
+    
+    if (map->no)
+        free(map->no);
+    if (map->so)
+        free(map->so);
+    if (map->we)
+        free(map->we);
+    if (map->ea)
+        free(map->ea);
+    if (map->grid)
+    {
+        i = 0;
+        while (i < map->height)
+        {
+            if (map->grid[i])
+                free(map->grid[i]);
+            i++;
+        }
+        free(map->grid);
+    }
+    if (map->is_empty_line)
+        free(map->is_empty_line);
 }
