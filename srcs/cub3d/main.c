@@ -2,7 +2,6 @@
 
 int game_loop(t_game *game)
 {
-
     handle_movement(game);
     ft_memset(game->mlx.addr, 0, game->mlx.win_height * game->mlx.line_length);
     draw_ceiling_floor(game);

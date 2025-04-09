@@ -29,6 +29,9 @@
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.03
 
+# define WIDTH 1280
+# define HEIGHT 720
+
 typedef struct s_color
 {
     int r;
@@ -84,8 +87,6 @@ typedef struct s_mlx
     int bits_per_pixel; // Number of bits in one pixel (color depth)
     int line_length;   // Number of bytes in one row of the image (for pixel addressing)
     int endian;        // Endianness of the pixel color representation (byte order)
-    int win_width;     // Width of the window in pixels
-    int win_height;    // Height of the window in pixels
 } t_mlx;
 
 typedef struct s_texture
@@ -110,7 +111,6 @@ typedef struct s_game
 
 typedef struct s_ray
 {
-    double camera_x;
     double ray_dir_x;
     double ray_dir_y;
     int map_x;
