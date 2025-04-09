@@ -40,10 +40,10 @@ char *read_string_map(t_obj_reader *reader /* , int flag */)
             break;
     }
     if (len == 0)
-    return NULL;
+        return NULL;
     str = malloc((len + 1) * sizeof(char));
     if (!str)
-    return NULL;
+        return NULL;
     ft_memcpy(str, temp, len);
     str[len] = '\0';
     return str;
@@ -91,30 +91,29 @@ void find_max_width(t_map *maps)
     }
     maps->width = max_width;
 }
+
 void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
     int i = 0;
-    // int flag;
+    int empty_line = 0;
     char c;
 
-    // flag = 0;
-    line = read_string_map(&tete_lecture /* , flag */);
+    line = read_string_map(&tete_lecture);
     if (line[0] == '\0')
     {
         free(line);
         ft_clean_up(maps, 0, "No existing map");
     }
-    // flag = 1;
-    // maps->width = ft_strlen(line);
+  
     while (line && line[0] != '\0')
     {
+
         create_line_of_map(maps, line, i);
         if ((c = obj_reader_peek(&tete_lecture)) == '\n')
         {
             obj_reader_next(&tete_lecture);
-            // printf("here \n");
-            if ((c = obj_reader_peek(&tete_lecture)) == '\n' /*  || c == '\t' || c == ' ' || c == '\0' */)
-                ft_clean_up(maps, 0, "Empty line in map");
+            if ((c = obj_reader_peek(&tete_lecture)) == '\n')
+            ft_clean_up(maps, 0, "Empty line after map");
         }
         i++;
         line = read_string_map(&tete_lecture /* , flag */);
