@@ -16,6 +16,19 @@
 # include <sys/stat.h>
 #include <stdint.h>
 
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_UP 65362
+# define KEY_RIGHT 65363
+# define KEY_DOWN 65364
+# define KEY_ESC 65307
+
+# define MOVE_SPEED 0.05
+# define ROT_SPEED 0.03
+
 typedef struct s_color
 {
     int r;
@@ -51,41 +64,49 @@ typedef struct s_obj_reader
     size_t line;
 } t_obj_reader;
 
+
 typedef struct s_player
 {
-    double pos_x;
-    double pos_y;
-    double dir_x;
-    double dir_y;
-    double plane_x;
-    double plane_y;
-    double move_speed;
-    double rot_speed;
+    double pos_x;      // Player's x-coordinate
+    double pos_y;      // Player's y-coordinate 
+    double dir_x;      // Player's x-direction (where they're facing)
+    double dir_y;      // Player's y-direction v (where they're facing)
+    double plane_x;    // Camera plane x-component (for raycasting field of view)
+    double plane_y;    // Camera plane y-component (for raycasting field of view)
 } t_player;
 
 typedef struct s_mlx
 {
-    void *mlx;
-    void *win;
-    void *img;
-    char *addr;
-    int bits_per_pixel;
-    int line_length;
-    int endian;
-    int win_width;
-    int win_height;
+    void *mlx;         // MLX instance pointer (core graphics handle)
+    void *win;         // Window pointer (handle to the created window)
+    void *img;         // Image pointer (handle to the created image)
+    char *addr;        // Image data address (pixel buffer for direct manipulation)
+    int bits_per_pixel; // Number of bits in one pixel (color depth)
+    int line_length;   // Number of bytes in one row of the image (for pixel addressing)
+    int endian;        // Endianness of the pixel color representation (byte order)
+    int win_width;     // Width of the window in pixels
+    int win_height;    // Height of the window in pixels
 } t_mlx;
 
 typedef struct s_texture
 {
-    void *img;
-    char *addr;
-    int width;
-    int height;
-    int bits_per_pixel;
-    int line_length;
-    int endian;
+    void *img;         // Texture image pointer (handle to the loaded texture)
+    char *addr;        // Texture image data address (pixel buffer)
+    int width;         // Width of the texture in pixels
+    int height;        // Height of the texture in pixels
+    int bits_per_pixel; // Number of bits in one pixel of the texture
+    int line_length;   // Number of bytes in one row of the texture (for pixel addressing)
+    int endian;        // Endianness of the texture pixel color representation
 } t_texture;
+
+typedef struct s_game
+{
+    t_mlx mlx;
+    t_map *map;
+    t_player player;
+    t_texture textures[4]; // North, South, East, West
+    int keys[65364];
+} t_game;
 
 typedef struct s_ray
 {
@@ -108,20 +129,11 @@ typedef struct s_ray
     int draw_end;
 } t_ray;
 
-typedef struct s_game
-{
-    t_mlx mlx;
-    t_map *map;
-    t_player player;
-    t_texture textures[4]; // North, South, East, West
-    int keys[256];
-} t_game;
-
 t_obj_reader obj_create_reader(int fd, char *buffer, size_t buffer_size);
 int16_t obj_reader_peek(t_obj_reader *self);
 int obj_reader_next(t_obj_reader *self);
 int check_map_file(t_map *maps, char **av);
-char *read_string_map(t_obj_reader *reader/* , int flag */);
+char *read_string_map(t_obj_reader *reader);
 int skip_whitespace_map(t_obj_reader *reader);
 void check_all_conditions(t_map *maps);
 void free_map(t_map *map);
@@ -130,10 +142,7 @@ void call_flood_fill(t_map *maps);
 int check_next_step(t_map *maps, int y, int x);
 
 int read_file(t_map *maps, int fd);
-// int ft_len(const char *s);
-
 void ft_clean_up(t_map *maps, int index, char *msg);
-
 
 int skip_whitespace(t_obj_reader *reader);
 char *read_string(t_obj_reader *reader);
@@ -145,18 +154,19 @@ int check_values(int value);
 
 int init_game(t_game *game, t_map *map);
 void init_player(t_game *game);
-int load_textures(t_game *game);
+int	load_textures(t_game *game);
+void	cleanup_game(t_game *game);
+void	cleanup_map(t_map *map);
 int run_game(t_game *game);
+int game_loop(t_game *game);
 int key_press(int keycode, t_game *game);
 int key_release(int keycode, t_game *game);
+
 int close_window(t_game *game);
-int game_loop(t_game *game);
-void handle_movement(t_game *game);
 void draw_ceiling_floor(t_game *game);
 void my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 void raycasting(t_game *game);
 void draw_textured_line(t_game *game, t_ray *ray, int x);
-void cleanup_map(t_map *map);
-void cleanup_game(t_game *game);
+void handle_movement(t_game *game);
 
 #endif
