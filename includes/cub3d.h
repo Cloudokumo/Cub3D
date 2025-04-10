@@ -28,6 +28,7 @@
 
 # define MOVE_SPEED 0.05
 # define ROT_SPEED 0.03
+# define MOUSE_SPEED 0
 
 # define WIDTH 1280
 # define HEIGHT 720
@@ -190,8 +191,8 @@ void    low_high_pixel(t_ray *ray);
 void find_direction(t_game *game, t_ray *ray);
 void init_keys(t_game *game);
 void draw_line(t_game *game, t_ray *ray, int x);
-void rotate_left(t_game *game);
-void rotate_right(t_game *game);
+void rotate_left(t_game *game, double speed);
+void rotate_right(t_game *game, double speed);
 void move_forward(t_game *game);
 void move_backward(t_game *game);
 void move_right(t_game *game);

@@ -12,12 +12,29 @@ int game_loop(t_game *game)
     return (0);
 }
 
+int mouse(int x, int y, void *arg)
+{
+    static int old_x = 0;
+    t_game      *game;
+
+    (void)y;
+    game = (t_game *)arg;
+    if (!old_x)
+        old_x = x;
+    if (old_x < x)
+        rotate_right(game, MOUSE_SPEED);
+    if (old_x > x)
+        rotate_left(game, MOUSE_SPEED);
+    old_x = x;
+    return (0);
+}
+
 int run_game(t_game *game)
 {
     mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);
     mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game);
     mlx_hook(game->mlx.win, 17, 0, close_window, game);
-
+    mlx_hook(game->mlx.win, MotionNotify, PointerMotionMask, &mouse, game);
     mlx_loop_hook(game->mlx.mlx, game_loop, game);
 
     mlx_loop(game->mlx.mlx);
