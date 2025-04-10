@@ -106,8 +106,27 @@ typedef struct s_game
     t_map *map;
     t_player player;
     t_texture textures[4]; // North, South, East, West
-    int keys[65364];
+    int key_w;
+    int key_s;
+    int key_a;
+    int key_d;
+    int key_left;
+    int key_right;
 } t_game;
+
+typedef struct s_draw
+{
+    int y;
+    int offset;
+    int tex_index;
+    int tex_x;
+    int tex_y;
+    int color;
+    double step;
+    double wall_x;
+    double tex_pos;
+} t_draw;
+
 
 typedef struct s_ray
 {
@@ -165,8 +184,19 @@ int key_release(int keycode, t_game *game);
 int close_window(t_game *game);
 void draw_ceiling_floor(t_game *game);
 void my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
-void raycasting(t_game *game);
-void draw_textured_line(t_game *game, t_ray *ray, int x);
+void raycasting(t_game *game, t_ray *ray);
+void dda(t_game *game, t_ray *ray);
+void    low_high_pixel(t_ray *ray);
+void find_direction(t_game *game, t_ray *ray);
+void init_keys(t_game *game);
+void draw_line(t_game *game, t_ray *ray, int x);
+void rotate_left(t_game *game);
+void rotate_right(t_game *game);
+void move_forward(t_game *game);
+void move_backward(t_game *game);
+void move_right(t_game *game);
+void move_left(t_game *game);
 void handle_movement(t_game *game);
+
 
 #endif

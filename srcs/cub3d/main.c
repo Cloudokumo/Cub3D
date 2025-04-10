@@ -2,10 +2,12 @@
 
 int game_loop(t_game *game)
 {
+    t_ray   ray;
+    
     handle_movement(game);
-    ft_memset(game->mlx.addr, 0, game->mlx.win_height * game->mlx.line_length);
-    draw_ceiling_floor(game);
-    raycasting(game);
+    ft_memset(game->mlx.addr, 0, HEIGHT * game->mlx.line_length);
+
+    raycasting(game, &ray);
     mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0); 
     return (0);
 }
