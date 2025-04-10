@@ -110,7 +110,8 @@ static void draw_pixels(t_game *game, t_draw *draw, t_ray *ray, int x)
         
         // Get color from texture
         draw->color = *(unsigned int*)(game->textures[draw->tex_index].addr + draw->offset);
-        
+        if (ray->side == 1)
+            draw->color = (draw->color >> 1) & 8355711;
         // Put pixel directly to screen buffer
         if (draw->y >= 0 && draw->y < HEIGHT && x >= 0 && x < WIDTH)
             *(unsigned int *)(game->mlx.addr + (draw->y * game->mlx.line_length + x * game->mlx.bits_per_pixel / 8)) = draw->color;
