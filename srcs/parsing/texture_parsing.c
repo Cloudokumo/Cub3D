@@ -103,7 +103,10 @@ int	parse_map_config(t_obj_reader *reader, t_map *map)
 			return (1);
 		type = read_string(reader);
 		if (!type)
+		{
+			printf("Error:dd %s\n", type);
 			break ;
+		}
 		if (!process_element(reader, map, type, found))
 		{
 			free(type);

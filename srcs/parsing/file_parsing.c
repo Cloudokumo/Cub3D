@@ -121,6 +121,5 @@ int	check_map_file(t_map *maps, char **av)
 	call_flood_fill(maps);
 	close(fd);
 	ft_clean_up(maps, 1, "Map configuration and data parsed successfully");
-	;
 	return (1);
 }

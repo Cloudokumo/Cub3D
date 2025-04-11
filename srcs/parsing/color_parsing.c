@@ -29,7 +29,7 @@ int	parse_color(t_obj_reader *reader, t_color *color)
 	{
 		if (!check_values(values[i]))
 		{
-			printf("wrong color values\n");
+			printf("value error\n");
 			return (0);
 		}
 		i++;
@@ -42,7 +42,7 @@ int	parse_color(t_obj_reader *reader, t_color *color)
 
 int	check_values(int value)
 {
-	if (value < 0 || value > 255)
+	if (value < 0 || value > 255 || !value)
 		return (EXIT_SUCCESS);
 	return (EXIT_FAILURE);
 }
@@ -57,7 +57,7 @@ char	*get_color_values(char *str, int j)
 	u = 0;
 	while (str[j] != ',' && str[j])
 		j++;
-	nbr = malloc((j - i) + 1);
+	nbr = malloc(sizeof(char) * (j - i) + 1);
 	if (!nbr)
 		return (NULL);
 	while (i < j)

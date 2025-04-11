@@ -30,10 +30,10 @@ char	*read_string(t_obj_reader *reader)
 	len = 0;
 	skip_whitespace(reader);
 	while ((c = obj_reader_peek(reader)) != -1 && c != ' ' && c != '\n'
-		&& c != '\t')
+	&& c != '\t' && c != '\0')
 	{
 		if (len < sizeof(temp) - 1)
-			temp[len++] = c;
+		temp[len++] = c;
 		obj_reader_next(reader);
 	}
 	if (len == 0)
@@ -43,7 +43,6 @@ char	*read_string(t_obj_reader *reader)
 		return (NULL);
 	memcpy(str, temp, len);
 	str[len] = '\0';
-	printf("%s yes\n", str);
 	return (str);
 }
 

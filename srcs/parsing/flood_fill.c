@@ -79,12 +79,13 @@ int	check_next_step(t_map *maps, int y, int x)
 
 // int check_next_step(t_map *maps, int y, int x)
 // {
-// 	if ((maps->grid[y] && maps->grid[y][x + 1]) && (x != 0 && maps->grid[y][x- 1])
-// 	&& (maps->grid[y + 1] && maps->grid[y + 1][0] && x <= ft_len(maps->grid[y+ 1]))
+// 	if ((maps->grid[y] && maps->grid[y][x + 1]) && (x != 0	&& maps->grid[y][x- 1])
+// 	&& (maps->grid[y + 1] && maps->grid[y + 1][0]	&& x <= ft_len(maps->grid[y+ 1]))
 // 	&& (y != 0 && x <= ft_len(maps->grid[y - 1]) && maps->grid[y - 1][0]))
 // 		return (1);
 // 	return (0);
 // }
+
 void	call_flood_fill(t_map *maps)
 {
 	char	**new_grid;
