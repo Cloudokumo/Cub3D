@@ -1,7 +1,8 @@
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -O2 -Iminilibx-linux
+CFLAGS	= -Wall -Wextra -Werror -g -O2 -Iminilibx-linux -gdwarf-4
 LDFLAGS	= -Lminilibx-linux -lmlx -LLibft -lft -lXext -lX11 -lm
 NAME 	= Cub3d
+
 ### DIRECTORIES ################################################################
 
 SRCS_DIR 	 = srcs
