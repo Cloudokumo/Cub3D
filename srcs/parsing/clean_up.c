@@ -17,7 +17,7 @@ void free_map(t_map *maps)
 
 void cleanup_map(t_map *map)
 {
-	int i;
+	// int i;
 	if (map->no)
 		free(map->no);
 	if (map->so)
@@ -37,16 +37,17 @@ void cleanup_map(t_map *map)
 	// 	map->ceiling_color = NULL;
 	// }
 	if (map->grid)
-	{
-		i = 0;
-		while (i < map->height)
-		{
-			if (map->grid[i])
-				free(map->grid[i]);
-			i++;
-		}
-		free(map->grid);
-	}
+		free_map(map);
+	// {
+	// 	i = 0;
+	// 	while (i < map->height)
+	// 	{
+	// 		if (map->grid[i])
+	// 			free(map->grid[i]);
+	// 		i++;
+	// 	}
+	// 	free(map->grid);
+	// }
 
 	if (map->is_empty_line)
 		free(map->is_empty_line);

@@ -10,13 +10,13 @@ char **duplicate_grid(t_map *maps)
 	j = -1;
 	tab = malloc(sizeof(char *) * (maps->height + 1));
 	if (!tab)
-		ft_clean_up(maps, 1, "Table height allocation failed");
+		ft_clean_up(maps, 1, "Table height allocation failed\n");
 	while (++j < maps->height)
 	{
 		line_len = ft_strlen(maps->grid[j]);
 		tab[j] = malloc(sizeof(char) * (maps->width + 1));
 		if (!tab[j])
-			ft_clean_up(maps, 1, "Table width allocation failed");
+			ft_clean_up(maps, 1, "Table width allocation failed\n");
 		i = -1;
 		while (++i < line_len)
 			tab[j][i] = maps->grid[j][i];
@@ -98,7 +98,7 @@ void call_flood_fill(t_map *maps)
 				if (flood_fill(maps, j, i, new_grid))
 					printf("Flood fill succeeded\n");
 				else
-					ft_clean_up(maps, 1, "Invalid map :missing walls");
+					ft_clean_up(maps, 1, "Invalid map :missing walls\n");
 			}
 			i++;
 		}

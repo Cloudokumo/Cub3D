@@ -88,8 +88,9 @@ int	load_textures(t_game *game)
 	if (!game->textures[0].img || !game->textures[1].img
 		|| !game->textures[2].img || !game->textures[3].img)
 	{
-		ft_putstr_fd("Texture loading failed \n", 2);
-		return (1);
+		ft_clean_up(game->map, 1, "Texture loading failed\n");
+		// ft_putstr_fd("Texture loading failed \n", 2);
+		// return (1);
 	}
 	game->textures[0].addr = mlx_get_data_addr(game->textures[0].img,
 			&game->textures[0].bits_per_pixel, &game->textures[0].line_length,
@@ -106,8 +107,9 @@ int	load_textures(t_game *game)
 	if (!game->textures[0].addr || !game->textures[1].addr
 		|| !game->textures[2].addr || !game->textures[3].addr)
 	{
-		ft_putstr_fd("Image loading failed ^^\n", 2);
-		return (1);
+		ft_clean_up(game->map, 1, "Image loading failed\n");
+		// ft_putstr_fd("Image loading failed ^^\n", 2);
+		// return (1);
 	}
 	return (0);
 }
