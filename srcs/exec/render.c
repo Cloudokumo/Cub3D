@@ -29,7 +29,7 @@ void	raycasting(t_game *game, t_ray *ray)
 	}
 }
 
-void	find_direction(t_game *game, t_ray *ray)
+static void	direction(t_ray *ray)
 {
 	if (ray->ray_dir_x == 0)
 		ray->delta_dist_x = INT_MAX;
@@ -39,6 +39,11 @@ void	find_direction(t_game *game, t_ray *ray)
 		ray->delta_dist_y = INT_MAX;
 	else
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+}
+
+void	find_direction(t_game *game, t_ray *ray)
+{
+	direction(ray);
 	if (ray->ray_dir_x < 0)
 	{
 		ray->step_x = -1;

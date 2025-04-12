@@ -1,10 +1,10 @@
 NO srcs/textures/obsi.xpm
-SO srcs/textures/obsi.xpm
+SO srcs/textures/car.xpm
 F 20,20,20
 C 200,200,200
 
-WE srcs/textures/obsi.xpm
-EA srcs/textures/obsi.xpm
+WE srcs/textures/shronk.xpm
+EA srcs/textures/cat.xpm
 
 
 
