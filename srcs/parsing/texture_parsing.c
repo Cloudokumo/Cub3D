@@ -10,15 +10,14 @@ static int is_valid_texture_path(const char *path)
 	len = ft_strlen(path);
 	if (len < 5 || ft_strcmp(path + len - 4, ".xpm") != 0)
 	{
-		printf("Error: Texture file must have .xpm extension: %s\n", path);
+		ft_clean_up(NULL, 1, "Error\nTexture file must have .xpm extension\n");
 		return (0);
 	}
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_clean_up(NULL, 1, "Error: Cannot open texture file\n");
-		// printf("Error: Cannot open texture file: %s\n", path);
-		// return (0);
+		ft_clean_up(NULL, 1, "Error\nCannot open texture file\n");
+		return (0);
 	}
 	close(fd);
 	return (1);
@@ -28,9 +27,8 @@ static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
 {
 	if (*found)
 	{
-		ft_clean_up(NULL, 1, "Error: Duplicate texture\n");
-		// printf("Error: Duplicate texture\n");
-		// return (0);
+		ft_clean_up(NULL, 1, "Error\nDuplicate texture\n");
+		return (0);
 	}
 	*texture_ptr = read_string(reader);
 	if (!*texture_ptr)
@@ -62,10 +60,10 @@ static int process_element(t_obj_reader *reader, t_map *map, char *type,
 		return (parse_color_element(reader, &map->ceiling_color, &found[5]));
 	else
 	{
-		printf("Error: Unknown map element: %s\n", type);
+		ft_clean_up(NULL, 1, "Error\nUnknown map element\n");
 		return (0);
 	}
-	// return 0;
+	return 0;
 }
 
 static int check_completion(int found[6])
@@ -102,8 +100,6 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
 	ft_memset(found, 0, sizeof(found));
 	while ((c = skip_whitespace(reader)) != -1)
 	{
-		if (check_completion(found))
-			return (1);
 		type = read_string(reader);
 		if (!type)
 			break;
@@ -116,11 +112,10 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
 		if (check_completion(found))
 			return (1);
 	}
-	if (!check_completion(found))
-	{
-		ft_clean_up(NULL, 1, "Error: Missing required map elements\n");
-		// printf("Error: Missing required map elements\n");
-		// return (0);
-	}
+	// if (!check_completion(found))
+	// {
+	// 	ft_clean_up(NULL, 1, "Error\nMissing required map elements\n");
+	// 	return (0);
+	// }
 	return (1);
 }

@@ -35,11 +35,12 @@ MLX = $(MLX_DIR)/libmlx.a
 all : $(MLX) $(NAME)
 
 $(NAME): $(OBJS) $(MLX)
-	@$(MAKE) -C ./Libft
+	@$(MAKE) --silent -C  ./Libft
 	@$(CC) $(OBJS) $(MLX) $(LDFLAGS) -o $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@mkdir -p $(dir $@)
+	@echo "[CMP]Compiling $<"
 	@$(CC) $(CFLAGS) $(INCLUDES_DIRS) -c $< -o $@
 
 $(MLX):
@@ -49,7 +50,7 @@ $(MLX):
 clean:
 	@rm -rf $(OBJS_DIR)
 	@if [ -d $(MLX_DIR) ]; then $(MAKE) -C $(MLX_DIR) clean; fi
-	@$(MAKE) -C ./Libft clean
+	@$(MAKE) --silent -C  ./Libft clean
 
 fclean : clean
 	@rm -f $(NAME)

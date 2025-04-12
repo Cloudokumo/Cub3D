@@ -22,6 +22,7 @@ int	init_game(t_game *game, t_map *map)
 	init_keys(game);
 	return (0);
 }
+
 void	init_keys(t_game *game)
 {
 	game->key_w = 0;
@@ -31,6 +32,7 @@ void	init_keys(t_game *game)
 	game->key_left = 0;
 	game->key_right = 0;
 }
+
 void	init_player(t_game *game)
 {
 	int	x;

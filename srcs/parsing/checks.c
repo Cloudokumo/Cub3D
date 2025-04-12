@@ -12,8 +12,8 @@ void check_all_conditions(t_map *maps)
 		while (maps->grid[j][i])
 		{
 			if (!ft_strchr("10NSWE ", maps->grid[j][i]))
-				ft_clean_up(maps, 1,
-							"Other characters than 1,0,N,S,W,E, , were found\n");
+				ft_clean_up(maps, 2,
+							"Error\nOther characters than 1,0,N,S,W,E, , were found\n");
 			i++;
 		}
 		j++;
@@ -35,7 +35,7 @@ void check_n_s_w_e_elements(t_map *maps)
 		while (maps->grid[j][i])
 		{
 			if (player_found == 1 && ft_strchr("NSWE", maps->grid[j][i]))
-				ft_clean_up(maps, 1, "Double player found\n");
+				ft_clean_up(maps, 2, "Error\nDouble player found\n");
 			else if (ft_strchr("NSWE", maps->grid[j][i]))
 				player_found = 1;
 			i++;
@@ -43,7 +43,7 @@ void check_n_s_w_e_elements(t_map *maps)
 		j++;
 	}
 	if (player_found == 0)
-		ft_clean_up(maps, 1, "No player found\n");
+		ft_clean_up(maps, 2, "Error\nNo player found\n");
 }
 // printf("second : Element found[%d][%d]: %c\n", j, i,
 // 	   maps->grid[j][i]);
@@ -68,3 +68,5 @@ void check_n_s_w_e_elements(t_map *maps)
 // si pas le bon extension ou mauvais extension -> obligatoire "Error",avec un autre msg[ok]
 // si la map est bien entoure de murs , et que ya des '1' et '0' en dehors-> c'est bon[ok]
 // si map en derniere position et que ya espace vide apres -> c'est bon , mais on considere c pas bon[ok]
+
+//dans les couleurs quand ya un pb ca segfault avec tout les erreur

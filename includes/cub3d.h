@@ -17,6 +17,7 @@
 #include "../X11/keysym.h"
 #include <stdint.h>
 
+#define INT_MAX 32767
 #define KEY_W 119
 #define KEY_A 97
 #define KEY_S 115
@@ -27,9 +28,9 @@
 #define KEY_DOWN 65364
 #define KEY_ESC 65307
 
-#define MOVE_SPEED 0.05
-#define ROT_SPEED 0.03
-#define MOUSE_SPEED 0.003
+#define MOVE_SPEED 0.005
+#define ROT_SPEED 0.003
+#define MOUSE_SPEED 0.0003
 
 #define WIDTH 1280
 #define HEIGHT 720
@@ -231,5 +232,9 @@ void rotate_right(t_game *game, double speed);
 
 // exec_utils.c
 void my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void get_size(char *path, t_game *game, int index);
+void open_texture_file(t_game *game, int index);
+void get_height_width(t_game *game, char *line, int index);
+char *get_values(char *line, int i);
 
 #endif
