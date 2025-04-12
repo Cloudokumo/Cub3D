@@ -3,12 +3,12 @@
 #include "cub3d.h"
 
 /// a supprimer
-void print_map(t_map *maps, int i)
+void	print_map(t_map *maps, int i)
 {
 	if (!maps || !maps->grid)
 	{
 		printf("Erreur : maps ou maps->grid est NULL\n");
-		return;
+		return ;
 	}
 	printf("Nombre de lignes : %d", i);
 	for (int j = 0; j < i; j++) // Parcours des lignes
@@ -25,10 +25,10 @@ void print_map(t_map *maps, int i)
 	}
 }
 
-void create_line_of_map(t_map *maps, char *line, int i)
+void	create_line_of_map(t_map *maps, char *line, int i)
 {
-	maps->grid = ft_realloc(maps->grid,
-							sizeof(char *) * i, sizeof(char *) * (i + 2));
+	maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i
+				+ 2));
 	if (!maps->grid)
 		ft_clean_up(maps, 3, "Error\nAllocation failed for maps->grid\n");
 	maps->grid[i] = ft_strdup(line);
@@ -39,16 +39,16 @@ void create_line_of_map(t_map *maps, char *line, int i)
 	printf("[%d] : %s\n", i, maps->grid[i]);
 }
 
-void find_max_width(t_map *maps)
+void	find_max_width(t_map *maps)
 {
-	int max_width;
-	int i;
-	int width;
+	int	max_width;
+	int	i;
+	int	width;
 
 	max_width = 0;
 	i = 0;
 	if (!maps->grid)
-		return;
+		return ;
 	while (maps->grid[i])
 	{
 		width = ft_strlen(maps->grid[i]);
@@ -59,10 +59,10 @@ void find_max_width(t_map *maps)
 	maps->width = max_width;
 }
 
-void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
+void	fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
-	char c;
-	int i;
+	char	c;
+	int		i;
 
 	i = -1;
 	line = read_string_map(&tete_lecture);
@@ -88,10 +88,10 @@ void fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 	free(line);
 }
 
-int read_file(t_map *maps, int fd)
+int	read_file(t_map *maps, int fd)
 {
-	t_obj_reader tete_lecture;
-	char line[4096];
+	t_obj_reader	tete_lecture;
+	char			line[4096];
 
 	tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
 	if (!maps)
@@ -100,11 +100,11 @@ int read_file(t_map *maps, int fd)
 	return (1);
 }
 
-int check_map_file(t_map *maps, char **av)
+int	check_map_file(t_map *maps, char **av)
 {
-	int fd;
-	t_obj_reader reader;
-	char buffer[BUFFER_SIZE];
+	int				fd;
+	t_obj_reader	reader;
+	char			buffer[BUFFER_SIZE];
 
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
 		ft_clean_up(maps, 3, "Error\nWrong file extension\n");

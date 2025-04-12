@@ -5,5 +5,9 @@
 		"unistd.h": "c",
 		"errno.h": "c",
 		"fcntl.h": "c"
-	}
+	},
+	"editor.codeActionsOnSave": {
+
+	},
+	"editor.defaultFormatter": "keyhr.42-c-format"
 }

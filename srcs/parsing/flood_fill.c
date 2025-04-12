@@ -1,11 +1,11 @@
 #include "cub3d.h"
 
-char **duplicate_grid(t_map *maps)
+char	**duplicate_grid(t_map *maps)
 {
-	char **tab;
-	int j;
-	int i;
-	int line_len;
+	char	**tab;
+	int		j;
+	int		i;
+	int		line_len;
 
 	j = -1;
 	tab = malloc(sizeof(char *) * (maps->height + 2));
@@ -28,7 +28,7 @@ char **duplicate_grid(t_map *maps)
 // i++;
 // j++;
 
-int flood_fill(t_map *maps, int j, int i, char **new_grid)
+int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 {
 	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width)
 		return (0);
@@ -39,53 +39,28 @@ int flood_fill(t_map *maps, int j, int i, char **new_grid)
 	if (new_grid[j][i] == 'X' || new_grid[j][i] == '1')
 		return (1);
 	new_grid[j][i] = 'X';
-	if (check_next_step(maps, j, i) && flood_fill(maps, j, i - 1, new_grid) && flood_fill(maps, j, i + 1, new_grid) && flood_fill(maps, j - 1, i, new_grid) && flood_fill(maps, j + 1, i, new_grid))
+	if (check_next_step(maps, j, i) && flood_fill(maps, j, i - 1, new_grid)
+		&& flood_fill(maps, j, i + 1, new_grid) && flood_fill(maps, j - 1, i,
+			new_grid) && flood_fill(maps, j + 1, i, new_grid))
 		return (1);
 	return (0);
 }
 
-int check_next_step(t_map *maps, int y, int x)
+int	check_next_step(t_map *maps, int y, int x)
 {
 	if (x <= 0 || y <= 0 || y + 1 >= maps->height || x + 1 >= maps->width)
 		return (0);
-	if (maps->grid[y][x + 1] && maps->grid[y][x - 1] && maps->grid[y + 1][x] && maps->grid[y - 1][x])
+	if (maps->grid[y][x + 1] && maps->grid[y][x - 1] && maps->grid[y + 1][x]
+		&& maps->grid[y - 1][x])
 		return (1);
 	return (0);
 }
 
-// int flood_fill(t_map *maps, int j, int i, char **new_grid)
-// {
-// 	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width )
-// 		return (0);
-// 	if (new_grid[j][i] && (new_grid[j][i] == 'X' || new_grid[j][i] == '1'))
-// 		return (1);
-// 	new_grid[j][i] = 'X';
-// 	if (check_next_step(maps, j, i)
-// 		&& (new_grid[j][i - 1] && flood_fill(maps, j, i - 1, new_grid) == 1)
-// 		&& (new_grid[j][i + 1] && flood_fill(maps, j, i + 1, new_grid) == 1)
-// 		&& (new_grid[j - 1][i] && flood_fill(maps, j - 1, i, new_grid) == 1)
-// 		&& (new_grid[j + 1][i] && flood_fill(maps, j + 1, i, new_grid) == 1))
-// 		return (1);
-// 	else
-// 		return (0);
-// 	return (1);
-
-// }
-
-// int check_next_step(t_map *maps, int y, int x)
-// {
-// 	if ((maps->grid[y] && maps->grid[y][x + 1]) && (x != 0	&& maps->grid[y][x- 1])
-// 	&& (maps->grid[y + 1] && maps->grid[y + 1][0]	&& x <= ft_len(maps->grid[y+ 1]))
-// 	&& (y != 0 && x <= ft_len(maps->grid[y - 1]) && maps->grid[y - 1][0]))
-// 		return (1);
-// 	return (0);
-// }
-
-void call_flood_fill(t_map *maps)
+void	call_flood_fill(t_map *maps)
 {
-	char **new_grid;
-	int j;
-	int i;
+	char	**new_grid;
+	int		j;
+	int		i;
 
 	j = 0;
 	new_grid = duplicate_grid(maps);
@@ -99,7 +74,8 @@ void call_flood_fill(t_map *maps)
 				if (flood_fill(maps, j, i, new_grid))
 					printf("Flood fill succeeded\n");
 				else
-					ft_clean_up(maps, 3, "Erreur\nInvalid map :missing walls\n");
+					ft_clean_up(maps, 3,
+						"Erreur\nInvalid map :missing walls\n");
 			}
 			i++;
 		}
