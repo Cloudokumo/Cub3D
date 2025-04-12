@@ -27,9 +27,9 @@
 # define KEY_DOWN 65364
 # define KEY_ESC 65307
 
-# define MOVE_SPEED 0.05
-# define ROT_SPEED 0.03
-# define MOUSE_SPEED 0.003
+# define MOVE_SPEED 0.005
+# define ROT_SPEED 0.003
+# define MOUSE_SPEED 0.0003
 
 # define WIDTH 1280
 # define HEIGHT 720

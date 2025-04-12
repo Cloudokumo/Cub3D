@@ -5,12 +5,13 @@ int	game_loop(t_game *game)
 	t_ray	ray;
 
 	handle_movement(game);
-    if (game->mlx.img)
-    {        
-        raycasting(game, &ray);
-	    mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0, 0);
-    }
-    return (0);
+	if (game->mlx.img)
+	{
+		raycasting(game, &ray);
+		mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0,
+			0);
+	}
+	return (0);
 }
 
 int	mouse(int x, int y, void *arg)
