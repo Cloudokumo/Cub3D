@@ -1,8 +1,8 @@
 #include "cub3d.h"
 
-void	free_map(t_map *maps)
+void free_map(t_map *maps)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < maps->height)
@@ -15,49 +15,8 @@ void	free_map(t_map *maps)
 	maps->grid = NULL;
 }
 
-void	ft_clean_up(t_map *maps, int index, char *msg)
+void cleanup_map(t_map *map)
 {
-	// if (maps)
-	// {
-	// 	if (maps->grid)
-	// 		free_map(maps);
-	// }
-    (void)maps;
-	if (index == 1)
-	{
-		printf("%s\n", msg);
-		return ;
-	}
-	printf("Error\n%s\n", msg);
-	exit(EXIT_FAILURE);
-}
-
-void	cleanup_game(t_game *game)
-{
-	int	i;
-    int j;
-
-    i = 0;
-    j = -1;
-	while (++j < 4)
-	{
-		if (game->textures[i].img)
-
-			mlx_destroy_image(game->mlx.mlx, game->textures[i].img);
-		i++;
-	}
-	if (game->mlx.img)
-		mlx_destroy_image(game->mlx.mlx, game->mlx.img);
-	if (game->mlx.win)
-		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
-	if (game->mlx.mlx)
-		mlx_destroy_display(game->mlx.mlx);
-}
-
-void	cleanup_map(t_map *map)
-{
-	int i;
-
 	if (map->no)
 		free(map->no);
 	if (map->so)
@@ -71,16 +30,46 @@ void	cleanup_map(t_map *map)
 	map->we = NULL;
 	map->ea = NULL;
 	if (map->grid)
-	{
-		i = 0;
-		while (i < map->height)
-		{
-			if (map->grid[i])
-				free(map->grid[i]);
-			i++;
-		}
-		free(map->grid);
-	}
+		free_map(map);
 	if (map->is_empty_line)
 		free(map->is_empty_line);
+}
+
+void ft_clean_up(t_map *maps, int index, char *msg)
+{
+	if (index == 1)
+		ft_putstr_fd(msg, 2);
+	if (index == 2)
+	{
+		cleanup_map(maps);
+		exit(EXIT_FAILURE);
+	}
+	if (index == 3)
+	{
+		ft_putstr_fd(msg, 2);
+		cleanup_map(maps);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void cleanup_game(t_game *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = -1;
+	while (++j < 4)
+	{
+		if (game->textures[i].img)
+
+			mlx_destroy_image(game->mlx.mlx, game->textures[i].img);
+		i++;
+	}
+	if (game->mlx.img)
+		mlx_destroy_image(game->mlx.mlx, game->mlx.img);
+	if (game->mlx.win)
+		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
+	if (game->mlx.mlx)
+		mlx_destroy_display(game->mlx.mlx);
 }

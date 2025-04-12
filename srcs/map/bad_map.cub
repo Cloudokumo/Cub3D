@@ -1,12 +1,29 @@
-NO textures/north_wall.xpm
-SO textures/south_wall.xpm
-WE textures/west_wall.xpm
-EA textures/east_wall.xpm
-
-F 220,100,255
-C 135,206,255
+NO srcs/textures/obsi.xpm
+SO                        srcs/textures/obsi.xpm
+F 20,111,200
+C 20,100,12
 
 
-111
-101
-111
+
+
+
+
+
+WE srcs/textures/obsi.xpm
+EA srcs/textures/obsi.xpm
+
+
+
+11111
+10001
+10001
+10001
+1E001    111
+100B1    101
+11001    111
+10001
+10001
+10001
+10001
+10001
+11111

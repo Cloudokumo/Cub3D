@@ -1,3 +1,5 @@
+
+
 #include "cub3d.h"
 
 /// a supprimer
@@ -28,10 +30,10 @@ void	create_line_of_map(t_map *maps, char *line, int i)
 	maps->grid = ft_realloc(maps->grid, sizeof(char *) * i, sizeof(char *) * (i
 				+ 2));
 	if (!maps->grid)
-		ft_clean_up(maps, 0, "Allocation failed for maps->grid");
+		ft_clean_up(maps, 3, "Error\nAllocation failed for maps->grid\n");
 	maps->grid[i] = ft_strdup(line);
 	if (!maps->grid[i])
-		ft_clean_up(maps, 0, "Allocation failed for maps->grid[i]");
+		ft_clean_up(maps, 3, "Error\nAllocation failed for maps->grid[i]\n");
 	maps->height++;
 	free(line);
 	printf("[%d] : %s\n", i, maps->grid[i]);
@@ -59,26 +61,27 @@ void	find_max_width(t_map *maps)
 
 void	fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 {
-	int		i;
 	char	c;
+	int		i;
 
-	i = 0;
+	i = -1;
 	line = read_string_map(&tete_lecture);
 	if (line[0] == '\0')
 	{
 		free(line);
-		ft_clean_up(maps, 0, "No existing map");
+		ft_clean_up(maps, 3, "Error\nNo existing map\n");
 	}
 	while (line && line[0] != '\0')
 	{
-		create_line_of_map(maps, line, i);
-		if ((c = obj_reader_peek(&tete_lecture)) == '\n')
+		create_line_of_map(maps, line, ++i);
+		c = obj_reader_peek(&tete_lecture);
+		if (c == '\n')
 		{
 			obj_reader_next(&tete_lecture);
-			if ((c = obj_reader_peek(&tete_lecture)) == '\n')
-				ft_clean_up(maps, 0, "Empty line after map");
+			c = obj_reader_peek(&tete_lecture);
+			if (c == '\n')
+				ft_clean_up(maps, 3, "Error\nEmpty line after map\n");
 		}
-		i++;
 		line = read_string_map(&tete_lecture);
 	}
 	find_max_width(maps);
@@ -92,7 +95,7 @@ int	read_file(t_map *maps, int fd)
 
 	tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
 	if (!maps)
-		ft_clean_up(maps, 0, "Map is NULL"); // peut etre inutile
+		ft_clean_up(maps, 2, NULL); // peut etre inutile
 	fill_the_grid(maps, tete_lecture, line);
 	return (1);
 }
@@ -104,22 +107,22 @@ int	check_map_file(t_map *maps, char **av)
 	char			buffer[BUFFER_SIZE];
 
 	if (ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
-		ft_clean_up(maps, 0, "Wrong file extension");
+		ft_clean_up(maps, 3, "Error\nWrong file extension\n");
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-		ft_clean_up(maps, 0, "No file found");
+		ft_clean_up(maps, 1, "Error\nNo file found\n");
 	reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
 	if (!parse_map_config(&reader, maps))
-		ft_clean_up(maps, 0, "Error parsing map configuration");
+		ft_clean_up(maps, 2, NULL);
 	if (!read_file(maps, fd))
 	{
 		close(fd);
-		ft_clean_up(maps, 0, "Error reading map data");
+		ft_clean_up(maps, 3, "Error\nError reading map data\n");
 	}
 	check_all_conditions(maps);
-	check_N_S_W_E_elements(maps);
+	check_n_s_w_e_elements(maps);
 	call_flood_fill(maps);
 	close(fd);
-	ft_clean_up(maps, 1, "Map configuration and data parsed successfully");
 	return (1);
 }
+// ft_clean_up(0, 1, "Map configuration and data parsed successfully");
