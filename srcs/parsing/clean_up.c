@@ -38,18 +38,20 @@ void	cleanup_game(t_game *game)
     int j;
 
     i = 0;
-    j = 0;
-	while (j < 4)
+    j = -1;
+	while (++j < 4)
 	{
 		if (game->textures[i].img)
+
 			mlx_destroy_image(game->mlx.mlx, game->textures[i].img);
-        j++;
-        i++;
+		i++;
 	}
 	if (game->mlx.img)
 		mlx_destroy_image(game->mlx.mlx, game->mlx.img);
 	if (game->mlx.win)
 		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
+	if (game->mlx.mlx)
+		mlx_destroy_display(game->mlx.mlx);
 }
 
 void	cleanup_map(t_map *map)
@@ -64,6 +66,10 @@ void	cleanup_map(t_map *map)
 		free(map->we);
 	if (map->ea)
 		free(map->ea);
+	map->no = NULL;
+	map->so = NULL;
+	map->we = NULL;
+	map->ea = NULL;
 	if (map->grid)
 	{
 		i = 0;

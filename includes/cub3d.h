@@ -16,6 +16,7 @@
 # include <sys/stat.h>
 #include <stdint.h>
 
+# define INT_MAX 32767
 # define KEY_W 119
 # define KEY_A 97
 # define KEY_S 115
@@ -198,6 +199,9 @@ void move_backward(t_game *game);
 void move_right(t_game *game);
 void move_left(t_game *game);
 void handle_movement(t_game *game);
-
+void get_size(char *path, t_game *game, int index);
+void	open_texture_file(t_game *game, int index);
+void    get_height_width(t_game *game, char *line,int index);
+char *get_values(char *line, int i);
 
 #endif
