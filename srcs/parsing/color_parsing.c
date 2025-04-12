@@ -2,10 +2,8 @@
 int check_values(int value)
 {
 	if (value < 0 || value > 255)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-	// return (EXIT_SUCCESS);
-	// return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 int parse_color(t_obj_reader *reader, t_color *color)
@@ -35,7 +33,7 @@ int parse_color(t_obj_reader *reader, t_color *color)
 	i = 0;
 	while (i < 3)
 	{
-		if (/* ! */check_values(values[i]))
+		if (!check_values(values[i]))
 		{
 			ft_clean_up(NULL, 1, "Color values must be between 0 and 255\n");
 			// printf("wrong color values\n");
