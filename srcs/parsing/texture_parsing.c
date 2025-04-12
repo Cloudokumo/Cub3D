@@ -1,9 +1,9 @@
 #include "cub3d.h"
 
-static int is_valid_texture_path(const char *path)
+static int	is_valid_texture_path(const char *path)
 {
-	int fd;
-	int len;
+	int	fd;
+	int	len;
 
 	if (!path)
 		return (0);
@@ -23,7 +23,7 @@ static int is_valid_texture_path(const char *path)
 	return (1);
 }
 
-static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
+static int	parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
 {
 	if (*found)
 	{
@@ -43,8 +43,8 @@ static int parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
 	return (1);
 }
 
-static int process_element(t_obj_reader *reader, t_map *map, char *type,
-						   int found[6])
+static int	process_element(t_obj_reader *reader, t_map *map, char *type,
+		int found[6])
 {
 	if (strcmp(type, "NO") == 0)
 		return (parse_texture(reader, &map->no, &found[0]));
@@ -63,12 +63,12 @@ static int process_element(t_obj_reader *reader, t_map *map, char *type,
 		ft_clean_up(NULL, 1, "Error\nUnknown map element\n");
 		return (0);
 	}
-	return 0;
+	return (0);
 }
 
-static int check_completion(int found[6])
+static int	check_completion(int found[6])
 {
-	int complete;
+	int	complete;
 
 	complete = 1;
 	if (!found[0])
@@ -91,18 +91,18 @@ static int check_completion(int found[6])
 	return (0);
 }
 
-int parse_map_config(t_obj_reader *reader, t_map *map)
+int	parse_map_config(t_obj_reader *reader, t_map *map)
 {
-	int16_t c;
-	char *type;
-	int found[6];
+	int16_t	c;
+	char	*type;
+	int		found[6];
 
 	ft_memset(found, 0, sizeof(found));
 	while ((c = skip_whitespace(reader)) != -1)
 	{
 		type = read_string(reader);
 		if (!type)
-			break;
+			break ;
 		if (!process_element(reader, map, type, found))
 		{
 			free(type);
@@ -112,10 +112,10 @@ int parse_map_config(t_obj_reader *reader, t_map *map)
 		if (check_completion(found))
 			return (1);
 	}
-	// if (!check_completion(found))
-	// {
-	// 	ft_clean_up(NULL, 1, "Error\nMissing required map elements\n");
-	// 	return (0);
-	// }
+	if (!check_completion(found))
+	{
+		ft_clean_up(NULL, 1, "Error\nMissing required map elements\n");
+		return (0);
+	}
 	return (1);
 }
