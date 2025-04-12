@@ -3,7 +3,11 @@
 int	key_press(int keycode, t_game *game)
 {
 	if (keycode == XK_Escape)
+	{
 		cleanup_game(game);
+		cleanup_map(game->map);
+		exit(0);
+	}
 	if (keycode == XK_w || keycode == XK_Up)
 		game->key_w = 1;
 	if (keycode == XK_s || keycode == XK_Down)
@@ -22,7 +26,11 @@ int	key_press(int keycode, t_game *game)
 int	key_release(int keycode, t_game *game)
 {
 	if (keycode == XK_Escape)
+	{
 		cleanup_game(game);
+		cleanup_map(game->map);
+		exit(0);
+	}
 	else if (keycode == XK_w || keycode == XK_Up)
 		game->key_w = 0;
 	else if (keycode == XK_s || keycode == XK_Down)

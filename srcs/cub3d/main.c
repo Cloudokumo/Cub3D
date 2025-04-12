@@ -38,12 +38,14 @@ int	run_game(t_game *game)
 	mlx_hook(game->mlx.win, MotionNotify, PointerMotionMask, &mouse, game);
 	mlx_loop_hook(game->mlx.mlx, game_loop, game);
 	mlx_loop(game->mlx.mlx);
+	printf("Ersdfss\n");
 	return (0);
 }
 
 int	close_window(t_game *game)
 {
 	cleanup_game(game);
+	cleanup_map(game->map);
 	exit(0);
 	return (0);
 }
@@ -64,6 +66,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (init_game(&game, &maps) != 0)
 		return (1);
+	printf("Ersdfss\n");
 	run_game(&game);
 	cleanup_game(&game);
 	cleanup_map(&maps);

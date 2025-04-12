@@ -22,6 +22,7 @@ int	parse_color(t_obj_reader *reader, t_color *color)
 		j++;
 		nbr = get_color_values(num_str, j);
 		values[i] = atoi(nbr);
+		free(nbr); 
 	}
 	free(num_str);
 	i = 0;
