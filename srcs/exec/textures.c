@@ -6,7 +6,8 @@ void	draw_ceiling_floor(t_game *game)
 	int	y;
 	int	color;
 
-	color = (game->map->ceiling_color.r << 16) | (game->map->ceiling_color.g << 8) | (game->map->ceiling_color.b);
+	color = (game->map->ceiling_color.r << 16)
+		| (game->map->ceiling_color.g << 8) | (game->map->ceiling_color.b);
 	y = 0;
 	while (y < HEIGHT / 2)
 	{
@@ -15,7 +16,8 @@ void	draw_ceiling_floor(t_game *game)
 			my_mlx_pixel_put(&game->mlx, x++, y, color);
 		y++;
 	}
-	color = (game->map->floor_color.r << 16) | (game->map->floor_color.g << 8) | (game->map->floor_color.b);
+	color = (game->map->floor_color.r << 16)
+		| (game->map->floor_color.g << 8) | (game->map->floor_color.b);
 	y = HEIGHT / 2;
 	while (y < HEIGHT)
 	{
@@ -71,8 +73,8 @@ static void	draw_pixels(t_game *game, t_draw *draw, t_ray *ray, int x)
 {
 	while (draw->y < ray->draw_end)
 	{
-		draw->tex_y = (int)draw->tex_pos & (game->textures[draw->tex_index].height
-				- 1);
+		draw->tex_y = (int)draw->tex_pos
+			& (game->textures[draw->tex_index].height - 1);
 		draw->tex_pos += draw->step;
 		draw->offset = (draw->tex_y
 				* game->textures[draw->tex_index].line_length + draw->tex_x
@@ -99,5 +101,3 @@ void	draw_line(t_game *game, t_ray *ray, int x)
 	draw.y = ray->draw_start;
 	draw_pixels(game, &draw, ray, x);
 }
-
-// open_texture_file(game, draw.tex_index);

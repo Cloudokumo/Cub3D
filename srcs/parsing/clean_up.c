@@ -1,8 +1,8 @@
 #include "cub3d.h"
 
-void free_map(t_map *maps)
+void	free_map(t_map *maps)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < maps->height)
@@ -15,7 +15,7 @@ void free_map(t_map *maps)
 	maps->grid = NULL;
 }
 
-void cleanup_map(t_map *map)
+void	cleanup_map(t_map *map)
 {
 	if (map->no)
 		free(map->no);
@@ -35,7 +35,7 @@ void cleanup_map(t_map *map)
 		free(map->is_empty_line);
 }
 
-void ft_clean_up(t_map *maps, int index, char *msg)
+void	ft_clean_up(t_map *maps, int index, char *msg)
 {
 	if (index == 1)
 		ft_putstr_fd(msg, 2);
@@ -52,17 +52,16 @@ void ft_clean_up(t_map *maps, int index, char *msg)
 	}
 }
 
-void cleanup_game(t_game *game)
+void	cleanup_game(t_game *game)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = -1;
 	while (++j < 4)
 	{
 		if (game->textures[i].img)
-
 			mlx_destroy_image(game->mlx.mlx, game->textures[i].img);
 		i++;
 	}

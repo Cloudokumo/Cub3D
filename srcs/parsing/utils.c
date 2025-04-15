@@ -1,75 +1,54 @@
 #include "cub3d.h"
 
-int	skip_whitespace(t_obj_reader *reader)
+int	check_values(int value)
 {
-	int16_t	c;
-
-	while ((c = obj_reader_peek(reader)) != -1 && (c == ' ' || c == '\t'
-			|| c == '\n'))
-		obj_reader_next(reader);
-	return (c);
+	if (value < 0 || value > 255)
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
-int	skip_whitespace_map(t_obj_reader *reader)
+char	*get_color_values(char *str, int j)
 {
-	int16_t	c;
+	int		i;
+	int		u;
+	char	*nbr;
 
-	while ((c = obj_reader_peek(reader)) != -1 && (c == '\t' || c == '\n'))
-		obj_reader_next(reader);
-	return (c);
+	i = j;
+	u = 0;
+	while (str[j] != ',' && str[j])
+		j++;
+	nbr = malloc(sizeof(char) * (j - i) + 1);
+	if (!nbr)
+		return (NULL);
+	while (i < j)
+		nbr[u++] = str[i++];
+	nbr[u] = '\0';
+	return (nbr);
 }
 
-char	*read_string(t_obj_reader *reader)
+int	parse_color_element(t_obj_reader *reader, t_color *color, int *found)
 {
-	char	*str;
-	size_t	len;
-	int16_t	c;
-	char	temp[1024];
-
-	str = NULL;
-	len = 0;
-	skip_whitespace(reader);
-	while ((c = obj_reader_peek(reader)) != -1 && c != ' ' && c != '\n'
-		&& c != '\t' && c != '\0')
+	if (*found)
 	{
-		if (len < sizeof(temp) - 1)
-			temp[len++] = c;
-		obj_reader_next(reader);
+		ft_clean_up(NULL, 1, "Error\nDuplicate color\n");
+		return (0);
 	}
-	if (len == 0)
-		return (NULL);
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
-	memcpy(str, temp, len);
-	str[len] = '\0';
-	return (str);
+	if (!parse_color(reader, color))
+		return (0);
+	*found = 1;
+	return (1);
 }
 
-char	*read_string_map(t_obj_reader *reader)
+int	count_commas(char *str)
 {
-	char	*str;
-	size_t	len;
-	int16_t	c;
-	char	temp[1024];
+	int	count;
 
-	str = NULL;
-	len = 0;
-	skip_whitespace_map(reader);
-	while ((c = obj_reader_peek(reader)) != -1 && c != '\n' && c != '\t')
+	count = 0;
+	while (*str)
 	{
-		if (len < sizeof(temp) - 1)
-			temp[len++] = c;
-		obj_reader_next(reader);
-		if (c == '\0')
-			break ;
+		if (*str == ',')
+			count++;
+		str++;
 	}
-	if (len == 0)
-		return (NULL);
-	str = malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	ft_memcpy(str, temp, len);
-	str[len] = '\0';
-	return (str);
+	return (count);
 }

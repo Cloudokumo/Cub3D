@@ -25,8 +25,6 @@ char	**duplicate_grid(t_map *maps)
 	tab[j] = NULL;
 	return (tab);
 }
-// i++;
-// j++;
 
 int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 {
@@ -35,6 +33,7 @@ int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 	if (new_grid[j][i] == ' ' || new_grid[j][i] == '\t')
 	{
 		new_grid[j][i] = '1';
+		maps->grid[j][i] = '1';
 	}
 	if (new_grid[j][i] == 'X' || new_grid[j][i] == '1')
 		return (1);
@@ -55,6 +54,7 @@ int	check_next_step(t_map *maps, int y, int x)
 		return (1);
 	return (0);
 }
+
 void	free_duplicate_grid(char **grid, int height)
 {
 	int	i;
@@ -65,10 +65,8 @@ void	free_duplicate_grid(char **grid, int height)
 	while (i < height)
 	{
 		free(grid[i++]);
-		grid[i] = NULL;
 	}
 	free(grid);
-	grid = NULL;
 }
 
 void	call_flood_fill(t_map *maps)
@@ -86,9 +84,7 @@ void	call_flood_fill(t_map *maps)
 		{
 			if (ft_strchr("NSWE", maps->grid[j][i]))
 			{
-				if (flood_fill(maps, j, i, new_grid))
-					printf("Flood fill succeeded\n");
-				else
+				if (!flood_fill(maps, j, i, new_grid))
 				{
 					free_duplicate_grid(new_grid, maps->height);
 					ft_clean_up(maps, 3,
@@ -99,19 +95,5 @@ void	call_flood_fill(t_map *maps)
 		}
 		j++;
 	}
-	i = 0;
-	while (i < maps->height)
-	{
-		printf("[%d] : %s\n", i, new_grid[i]);
-		i++;
-	}
-	j = 0;
-	while (j < maps->height)
-	{
-		free(new_grid[j]);
-		new_grid[j] = NULL;
-		j++;
-	}
-	free(new_grid);
-	new_grid = NULL;
+	free_duplicate_grid(new_grid, maps->height);
 }

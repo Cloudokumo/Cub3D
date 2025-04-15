@@ -2,8 +2,16 @@
 
 t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size)
 {
-	return ((t_obj_reader){.fd = fd, .buffer = buffer,
-		.buffer_size = buffer_size, .len = 0, .i = 0, .column = 0, .line = 1});
+	t_obj_reader	reader;
+
+	reader.fd = fd;
+	reader.buffer = buffer;
+	reader.buffer_size = buffer_size;
+	reader.len = 0;
+	reader.i = 0;
+	reader.column = 0;
+	reader.line = 1;
+	return (reader);
 }
 
 int16_t	obj_reader_peek(t_obj_reader *self)
@@ -23,9 +31,10 @@ int16_t	obj_reader_peek(t_obj_reader *self)
 
 int	obj_reader_next(t_obj_reader *self)
 {
-	int16_t c;
+	int16_t	c;
 
-	if ((c = obj_reader_peek(self)) == '\n')
+	c = obj_reader_peek(self);
+	if (c == '\n')
 	{
 		self->line++;
 		self->column = 0;

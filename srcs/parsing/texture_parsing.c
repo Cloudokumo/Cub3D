@@ -84,10 +84,7 @@ static int	check_completion(int found[6])
 	if (!found[5])
 		complete = 0;
 	if (complete)
-	{
-		printf("Everything is found :D\n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -98,7 +95,8 @@ int	parse_map_config(t_obj_reader *reader, t_map *map)
 	int		found[6];
 
 	ft_memset(found, 0, sizeof(found));
-	while ((c = skip_whitespace(reader)) != -1)
+	c = skip_whitespace(reader);
+	while (c != -1)
 	{
 		type = read_string(reader);
 		if (!type)
@@ -111,11 +109,6 @@ int	parse_map_config(t_obj_reader *reader, t_map *map)
 		free(type);
 		if (check_completion(found))
 			return (1);
-	}
-	if (!check_completion(found))
-	{
-		ft_clean_up(NULL, 1, "Error\nMissing required map elements\n");
-		return (0);
 	}
 	return (1);
 }

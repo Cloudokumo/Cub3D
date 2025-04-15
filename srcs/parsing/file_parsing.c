@@ -1,29 +1,4 @@
-
-
 #include "cub3d.h"
-
-/// a supprimer
-void	print_map(t_map *maps, int i)
-{
-	if (!maps || !maps->grid)
-	{
-		printf("Erreur : maps ou maps->grid est NULL\n");
-		return ;
-	}
-	printf("Nombre de lignes : %d", i);
-	for (int j = 0; j < i; j++) // Parcours des lignes
-	{
-		if (!maps->grid[j])
-		{
-			printf("maps->grid[%d] est NULL !\n", j);
-		}
-		for (int k = 0; maps->grid[j][k] != '\0'; k++) // Parcours des colonnes
-			printf("[%c]", maps->grid[j][k]);
-		// Affiche chaque caractère avec des crochets
-		printf("\n");
-		// Nouvelle ligne après chaque ligne affichée
-	}
-}
 
 void	create_line_of_map(t_map *maps, char *line, int i)
 {
@@ -36,7 +11,6 @@ void	create_line_of_map(t_map *maps, char *line, int i)
 		ft_clean_up(maps, 3, "Error\nAllocation failed for maps->grid[i]\n");
 	maps->height++;
 	free(line);
-	printf("[%d] : %s\n", i, maps->grid[i]);
 }
 
 void	find_max_width(t_map *maps)
@@ -95,7 +69,7 @@ int	read_file(t_map *maps, int fd)
 
 	tete_lecture = obj_create_reader(fd, line, BUFFER_SIZE);
 	if (!maps)
-		ft_clean_up(maps, 2, NULL); // peut etre inutile
+		ft_clean_up(maps, 2, NULL);
 	fill_the_grid(maps, tete_lecture, line);
 	return (1);
 }
@@ -125,4 +99,3 @@ int	check_map_file(t_map *maps, char **av)
 	close(fd);
 	return (1);
 }
-// ft_clean_up(0, 1, "Map configuration and data parsed successfully");
