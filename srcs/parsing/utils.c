@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:05:08 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:05:08 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	check_values(int value)
@@ -7,48 +19,85 @@ int	check_values(int value)
 	return (EXIT_FAILURE);
 }
 
-char	*get_color_values(char *str, int j)
+int	skip_whitespace(t_obj_reader *reader)
 {
-	int		i;
-	int		u;
-	char	*nbr;
+	int16_t	c;
 
-	i = j;
-	u = 0;
-	while (str[j] != ',' && str[j])
-		j++;
-	nbr = malloc(sizeof(char) * (j - i) + 1);
-	if (!nbr)
+	c = obj_reader_peek(reader);
+	while (c != -1 && (c == ' ' || c == '\t' || c == '\n'))
+	{
+		obj_reader_next(reader);
+		c = obj_reader_peek(reader);
+	}
+	return (c);
+}
+
+int	skip_whitespace_map(t_obj_reader *reader)
+{
+	int16_t	c;
+
+	c = obj_reader_peek(reader);
+	while (c != -1 && (c == '\t' || c == '\n'))
+	{
+		obj_reader_next(reader);
+		c = obj_reader_peek(reader);
+	}
+	return (c);
+}
+
+char	*read_string(t_obj_reader *reader)
+{
+	char	*str;
+	size_t	len;
+	int16_t	c;
+	char	temp[1024];
+
+	str = NULL;
+	len = 0;
+	skip_whitespace(reader);
+	c = obj_reader_peek(reader);
+	while (c != -1 && c != ' ' && c != '\n' && c != '\t' && c != '\0')
+	{
+		if (len < sizeof(temp) - 1)
+			temp[len++] = c;
+		obj_reader_next(reader);
+		c = obj_reader_peek(reader);
+	}
+	if (len == 0)
 		return (NULL);
-	while (i < j)
-		nbr[u++] = str[i++];
-	nbr[u] = '\0';
-	return (nbr);
+	str = malloc(len + 1);
+	if (!str)
+		return (NULL);
+	memcpy(str, temp, len);
+	str[len] = '\0';
+	return (str);
 }
 
-int	parse_color_element(t_obj_reader *reader, t_color *color, int *found)
+char	*read_string_map(t_obj_reader *reader)
 {
-	if (*found)
-	{
-		ft_clean_up(NULL, 1, "Error\nDuplicate color\n");
-		return (0);
-	}
-	if (!parse_color(reader, color))
-		return (0);
-	*found = 1;
-	return (1);
-}
+	char	*str;
+	size_t	len;
+	int16_t	c;
+	char	temp[1024];
 
-int	count_commas(char *str)
-{
-	int	count;
-
-	count = 0;
-	while (*str)
+	len = 0;
+	skip_whitespace_map(reader);
+	c = obj_reader_peek(reader);
+	while (c != -1 && c != '\n' && c != '\t')
 	{
-		if (*str == ',')
-			count++;
-		str++;
+		if (len < sizeof(temp) - 1)
+			temp[len++] = c;
+		obj_reader_next(reader);
+		if (c == '\0')
+			break ;
+		c = obj_reader_peek(reader);
 	}
-	return (count);
+	if (len == 0)
+		return (NULL);
+	str = malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, temp, len);
+	str[len] = '\0';
+	return (str);
 }

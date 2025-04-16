@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_parsing.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:05:01 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:20:47 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	create_line_of_map(t_map *maps, char *line, int i)
@@ -54,7 +66,7 @@ void	fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 			obj_reader_next(&tete_lecture);
 			c = obj_reader_peek(&tete_lecture);
 			if (c == '\n')
-				ft_clean_up(maps, 3, "Error\nEmpty line after map\n");
+				ft_clean_up(maps, 3, "Error in .cub file\n");
 		}
 		line = read_string_map(&tete_lecture);
 	}
@@ -84,7 +96,7 @@ int	check_map_file(t_map *maps, char **av)
 		ft_clean_up(maps, 3, "Error\nWrong file extension\n");
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
-		ft_clean_up(maps, 1, "Error\nNo file found\n");
+		ft_clean_up(maps, 3, "Error\nNo file found\n");
 	reader = obj_create_reader(fd, buffer, BUFFER_SIZE);
 	if (!parse_map_config(&reader, maps))
 		ft_clean_up(maps, 2, NULL);
@@ -99,3 +111,4 @@ int	check_map_file(t_map *maps, char **av)
 	close(fd);
 	return (1);
 }
+// ft_clean_up(0, 1, "Map configuration and data parsed successfully");

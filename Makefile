@@ -16,9 +16,24 @@ INCLUDES_DIRS = -I$(INCLUDES_DIR)
 
 ### SRC ########################################################################
 
-SRCS	=	$(wildcard $(SRCS_CUB3D)/*.c) \
-			$(wildcard $(SRCS_PARSING)/*.c) \
-			$(wildcard $(SRCS_EXEC)/*.c)
+SRCS	=	main.c \
+			$(SRCS_PARSING)/checks.c \
+			$(SRCS_PARSING)/utils2.c \
+			$(SRCS_PARSING)/clean_up.c \
+			$(SRCS_PARSING)/color_parsing.c \
+			$(SRCS_PARSING)/file_parsing.c \
+			$(SRCS_PARSING)/flood_fill.c \
+			$(SRCS_PARSING)/reader_peek_and_next.c \
+			$(SRCS_PARSING)/texture_parsing.c \
+			$(SRCS_PARSING)/utils.c \
+			$(SRCS_EXEC)/exec_utils.c \
+			$(SRCS_EXEC)/init.c \
+			$(SRCS_EXEC)/keys.c \
+			$(SRCS_EXEC)/movement.c \
+			$(SRCS_EXEC)/render.c \
+			$(SRCS_EXEC)/rotate.c \
+			$(SRCS_EXEC)/texture_init.c \
+			$(SRCS_EXEC)/textures.c
 
 ### OBJS ###########################################################################
 

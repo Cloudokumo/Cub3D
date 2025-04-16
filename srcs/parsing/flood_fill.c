@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:50:45 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:55:24 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 char	**duplicate_grid(t_map *maps)
@@ -26,9 +38,30 @@ char	**duplicate_grid(t_map *maps)
 	return (tab);
 }
 
+static int	is_within_bounds(t_map *maps, int y, int x)
+{
+	if (y < 0 || x < 0 || y >= maps->height || x >= maps->width)
+		return (0);
+	if (x >= (int)ft_strlen(maps->grid[y]))
+		return (0);
+	return (1);
+}
+
+int	is_safe_to_check_neighbors(t_map *maps, int y, int x)
+{
+	if (y <= 0 || x <= 0 || y + 1 >= maps->height || x + 1 >= maps->width)
+		return (0);
+	if (x >= (int)ft_strlen(maps->grid[y - 1])
+		|| x >= (int)ft_strlen(maps->grid[y + 1]))
+		return (0);
+	return (1);
+}
+
 int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 {
-	if (j < 0 || i < 0 || j >= maps->height || i >= maps->width)
+	int	result;
+
+	if (!is_within_bounds(maps, j, i) || i >= (int)ft_strlen(new_grid[j]))
 		return (0);
 	if (new_grid[j][i] == ' ' || new_grid[j][i] == '\t')
 	{
@@ -38,35 +71,12 @@ int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 	if (new_grid[j][i] == 'X' || new_grid[j][i] == '1')
 		return (1);
 	new_grid[j][i] = 'X';
-	if (check_next_step(maps, j, i) && flood_fill(maps, j, i - 1, new_grid)
-		&& flood_fill(maps, j, i + 1, new_grid) && flood_fill(maps, j - 1, i,
-			new_grid) && flood_fill(maps, j + 1, i, new_grid))
-		return (1);
-	return (0);
-}
-
-int	check_next_step(t_map *maps, int y, int x)
-{
-	if (x <= 0 || y <= 0 || y + 1 >= maps->height || x + 1 >= maps->width)
+	if (!is_safe_to_check_neighbors(maps, j, i) || !check_next_step(maps, j, i))
 		return (0);
-	if (maps->grid[y][x + 1] && maps->grid[y][x - 1] && maps->grid[y + 1][x]
-		&& maps->grid[y - 1][x])
-		return (1);
-	return (0);
-}
-
-void	free_duplicate_grid(char **grid, int height)
-{
-	int	i;
-
-	i = 0;
-	if (!grid)
-		return ;
-	while (i < height)
-	{
-		free(grid[i++]);
-	}
-	free(grid);
+	result = flood_fill(maps, j, i - 1, new_grid) && flood_fill(maps, j, i + 1,
+			new_grid) && flood_fill(maps, j - 1, i, new_grid)
+		&& flood_fill(maps, j + 1, i, new_grid);
+	return (result);
 }
 
 void	call_flood_fill(t_map *maps)

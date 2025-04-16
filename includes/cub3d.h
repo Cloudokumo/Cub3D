@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:05:36 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:56:04 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -71,38 +83,34 @@ typedef struct s_obj_reader
 
 typedef struct s_player
 {
-	double pos_x;   // Player's x-coordinate
-	double pos_y;   // Player's y-coordinate
-	double dir_x;   // Player's x-direction (where they're facing)
-	double dir_y;   // Player's y-direction v (where they're facing)
-	double plane_x; // Camera plane x-component (for raycasting field of view)
-	double plane_y; // Camera plane y-component (for raycasting field of view)
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
 }				t_player;
 
 typedef struct s_mlx
 {
-	void *mlx;          // MLX instance pointer (core graphics handle)
-	void *win;          // Window pointer (handle to the created window)
-	void *img;          // Image pointer (handle to the created image)
-	char *addr;        
-		// Image data address (pixel buffer for direct manipulation)
-	int bits_per_pixel; // Number of bits in one pixel (color depth)
-	int line_length;   
-		// Number of bytes in one row of the image (for pixel addressing)
-	int endian;        
-		// Endianness of the pixel color representation (byte order)
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_mlx;
 
 typedef struct s_texture
 {
-	void *img;          // Texture image pointer (handle to the loaded texture)
-	char *addr;         // Texture image data address (pixel buffer)
-	int width;          // Width of the texture in pixels
-	int height;         // Height of the texture in pixels
-	int bits_per_pixel; // Number of bits in one pixel of the texture
-	int line_length;   
-		// Number of bytes in one row of the texture (for pixel addressing)
-	int endian;         // Endianness of the texture pixel color representation
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }				t_texture;
 
 typedef struct s_game
@@ -110,7 +118,7 @@ typedef struct s_game
 	t_mlx		mlx;
 	t_map		*map;
 	t_player	player;
-	t_texture textures[4]; // North, South, East, West
+	t_texture	textures[4]; // North, South, East, West
 	int			key_w;
 	int			key_s;
 	int			key_a;
@@ -169,7 +177,6 @@ int				skip_whitespace(t_obj_reader *reader);
 int				skip_whitespace_map(t_obj_reader *reader);
 char			*read_string(t_obj_reader *reader);
 char			*read_string_map(t_obj_reader *reader);
-int				count_commas(char *str);
 
 // texture_parsing.c
 int				parse_map_config(t_obj_reader *reader, t_map *map);
@@ -242,5 +249,9 @@ void			get_size(char *path, t_game *game, int index);
 void			open_texture_file(t_game *game, int index);
 void			get_height_width(t_game *game, char *line, int index);
 char			*get_values(char *line, int i);
+
+int				count_commas(char *str);
+void			free_duplicate_grid(char **grid, int height);
+int				is_safe_to_check_neighbors(t_map *maps, int y, int x);
 
 #endif

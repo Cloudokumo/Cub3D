@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reader_peek_and_next.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:05:05 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:05:41 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 t_obj_reader	obj_create_reader(int fd, char *buffer, size_t buffer_size)
 {
 	t_obj_reader	reader;
 
+	return ((t_obj_reader){.fd = fd, .buffer = buffer,
+		.buffer_size = buffer_size, .len = 0, .i = 0, .column = 0, .line = 1});
 	reader.fd = fd;
 	reader.buffer = buffer;
 	reader.buffer_size = buffer_size;

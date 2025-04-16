@@ -1,4 +1,16 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:05:24 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 05:05:49 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "includes/cub3d.h"
 
 int	game_loop(t_game *game)
 {
@@ -67,7 +79,6 @@ int	main(int ac, char **av)
 	if (init_game(&game, &maps) != 0)
 		return (1);
 	run_game(&game);
-	cleanup_game(&game);
 	cleanup_map(&maps);
 	return (0);
 }

@@ -1,0 +1,22 @@
+F 76,76,78
+C 99,99,55
+
+NO srcs/textures/cat.xpm
+SO srcs/textures/cat.xpm
+WE srcs/textures/cat.xpm
+EA srcs/textures/cat.xpm
+
+111111111
+1S0000001
+100000001
+101000001
+100000001
+100000011
+100001001
+100000001
+100000001
+11110111
+1111
+1111111
+111
+111111111

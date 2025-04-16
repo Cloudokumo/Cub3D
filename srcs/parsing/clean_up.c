@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   clean_up.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:04:56 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:04:57 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	free_map(t_map *maps)
@@ -71,4 +83,5 @@ void	cleanup_game(t_game *game)
 		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
 	if (game->mlx.mlx)
 		mlx_destroy_display(game->mlx.mlx);
+	free(game->mlx.mlx);
 }

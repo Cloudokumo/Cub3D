@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:04:58 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:52:38 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	is_only_digits(char *str)
@@ -84,4 +96,18 @@ int	parse_color(t_obj_reader *reader, t_color *color)
 	color->g = values[1];
 	color->b = values[2];
 	return (1);
+}
+
+void	free_duplicate_grid(char **grid, int height)
+{
+	int	i;
+
+	i = 0;
+	if (!grid)
+		return ;
+	while (i < height)
+	{
+		free(grid[i++]);
+	}
+	free(grid);
 }

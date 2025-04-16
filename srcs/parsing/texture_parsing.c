@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   texture_parsing.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/16 04:04:33 by adiehl-b          #+#    #+#             */
+/*   Updated: 2025/04/16 04:05:08 by adiehl-b         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static int	is_valid_texture_path(const char *path)
@@ -102,13 +114,16 @@ int	parse_map_config(t_obj_reader *reader, t_map *map)
 		if (!type)
 			break ;
 		if (!process_element(reader, map, type, found))
-		{
-			free(type);
-			return (0);
-		}
+			return (free(type), 0);
 		free(type);
 		if (check_completion(found))
 			return (1);
+		c = skip_whitespace(reader);
+	}
+	if (!check_completion(found))
+	{
+		ft_clean_up(NULL, 1, "Error\nMissing required map elements\n");
+		return (0);
 	}
 	return (1);
 }
