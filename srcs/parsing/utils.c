@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:05:08 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:05:08 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:43:28 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*read_string(t_obj_reader *reader)
 	str = malloc(len + 1);
 	if (!str)
 		return (NULL);
-	memcpy(str, temp, len);
+	ft_memcpy(str, temp, len);
 	str[len] = '\0';
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:05:01 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 10:57:36 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:52:36 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	fill_the_grid(t_map *maps, t_obj_reader tete_lecture, char *line)
 			obj_reader_next(&tete_lecture);
 			c = obj_reader_peek(&tete_lecture);
 			if (c == '\n')
-				ft_clean_up(maps, 3, "Error in .cub file\n");
+				ft_clean_up(maps, 3, "Error\nError in .cub file\n");
 		}
 		line = read_string_map(&tete_lecture);
 	}

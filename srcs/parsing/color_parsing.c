@@ -6,7 +6,7 @@
 /*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:04:58 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 13:44:10 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:42:18 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	process_color_string(char *num_str, int values[3])
 	nbr = get_color_values(num_str, 0);
 	if (!is_only_digits(nbr))
 		return (free(nbr), 0);
-	values[0] = atoi(nbr);
+	values[0] = ft_atoi(nbr);
 	free(nbr);
 	i = 0;
 	while (++i <= 2)
@@ -63,7 +63,7 @@ static int	process_color_string(char *num_str, int values[3])
 		nbr = get_color_values(num_str, j);
 		if (!is_only_digits(nbr))
 			return (free(nbr), 0);
-		values[i] = atoi(nbr);
+		values[i] = ft_atoi(nbr);
 		free(nbr);
 	}
 	return (1);
