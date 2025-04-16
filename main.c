@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:05:24 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 14:20:47 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/04/16 05:05:49 by adiehl-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	game_loop(t_game *game)
 	if (game->mlx.img)
 	{
 		raycasting(game, &ray);
-		draw_minimap(game);
 		mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, game->mlx.img, 0,
 			0);
 	}

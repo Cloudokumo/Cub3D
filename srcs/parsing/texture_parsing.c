@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:04:33 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 15:43:15 by carzhang         ###   ########.fr       */
+/*   Updated: 2025/04/16 04:05:08 by adiehl-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ static int	parse_texture(t_obj_reader *reader, char **texture_ptr, int *found)
 static int	process_element(t_obj_reader *reader, t_map *map, char *type,
 		int found[6])
 {
-	if (ft_strcmp(type, "NO") == 0)
+	if (strcmp(type, "NO") == 0)
 		return (parse_texture(reader, &map->no, &found[0]));
-	else if (ft_strcmp(type, "SO") == 0)
+	else if (strcmp(type, "SO") == 0)
 		return (parse_texture(reader, &map->so, &found[1]));
-	else if (ft_strcmp(type, "WE") == 0)
+	else if (strcmp(type, "WE") == 0)
 		return (parse_texture(reader, &map->we, &found[2]));
-	else if (ft_strcmp(type, "EA") == 0)
+	else if (strcmp(type, "EA") == 0)
 		return (parse_texture(reader, &map->ea, &found[3]));
-	else if (ft_strcmp(type, "F") == 0)
+	else if (strcmp(type, "F") == 0)
 		return (parse_color_element(reader, &map->floor_color, &found[4]));
-	else if (ft_strcmp(type, "C") == 0)
+	else if (strcmp(type, "C") == 0)
 		return (parse_color_element(reader, &map->ceiling_color, &found[5]));
 	else
 	{
