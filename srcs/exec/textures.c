@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:04:52 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:04:53 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:28:36 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,3 @@ void	draw_line(t_game *game, t_ray *ray, int x)
 	draw.y = ray->draw_start;
 	draw_pixels(game, &draw, ray, x);
 }
-
-// open_texture_file(game, draw.tex_index);

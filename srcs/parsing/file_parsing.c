@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:05:01 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:20:47 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 10:57:36 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,3 @@ int	check_map_file(t_map *maps, char **av)
 	close(fd);
 	return (1);
 }
-// ft_clean_up(0, 1, "Map configuration and data parsed successfully");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_up.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:04:56 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:04:57 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:43:42 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,16 @@ void	cleanup_game(t_game *game)
 	if (game->mlx.mlx)
 		mlx_destroy_display(game->mlx.mlx);
 	free(game->mlx.mlx);
+}
+
+void	free_duplicate_grid(char **grid, int height)
+{
+	int	i;
+
+	i = 0;
+	if (!grid)
+		return ;
+	while (i < height)
+		free(grid[i++]);
+	free(grid);
 }

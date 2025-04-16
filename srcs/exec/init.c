@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:04:37 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:04:38 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:59:41 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ int	init_game(t_game *game, t_map *map)
 			&game->mlx.line_length, &game->mlx.endian);
 	init_player(game);
 	if (load_textures(game) != 0)
-	{
 		return (1);
-	}
 	init_keys(game);
 	return (0);
 }

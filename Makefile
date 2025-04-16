@@ -29,6 +29,7 @@ SRCS	=	main.c \
 			$(SRCS_EXEC)/exec_utils.c \
 			$(SRCS_EXEC)/init.c \
 			$(SRCS_EXEC)/keys.c \
+			$(SRCS_EXEC)/minimap.c \
 			$(SRCS_EXEC)/movement.c \
 			$(SRCS_EXEC)/render.c \
 			$(SRCS_EXEC)/rotate.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:05:00 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:55:55 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:59:55 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,16 @@ int	check_next_step(t_map *maps, int y, int x)
 		&& maps->grid[y + 1][x] != '\0' && maps->grid[y - 1][x] != '\0')
 		return (1);
 	return (0);
+}
+
+int	flood_fill_neighbors(t_map *maps, int j, int i, char **new_grid)
+{
+	int	result;
+
+	result = 1;
+	result &= flood_fill(maps, j, i - 1, new_grid);
+	result &= flood_fill(maps, j, i + 1, new_grid);
+	result &= flood_fill(maps, j - 1, i, new_grid);
+	result &= flood_fill(maps, j + 1, i, new_grid);
+	return (result);
 }

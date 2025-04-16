@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adiehl-b <adiehl-b@student.42.fr>          +#+  +:+       +#+        */
+/*   By: carzhang <carzhang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 04:50:45 by adiehl-b          #+#    #+#             */
-/*   Updated: 2025/04/16 04:55:24 by adiehl-b         ###   ########.fr       */
+/*   Updated: 2025/04/16 14:08:22 by carzhang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,7 @@ int	flood_fill(t_map *maps, int j, int i, char **new_grid)
 	new_grid[j][i] = 'X';
 	if (!is_safe_to_check_neighbors(maps, j, i) || !check_next_step(maps, j, i))
 		return (0);
-	result = flood_fill(maps, j, i - 1, new_grid) && flood_fill(maps, j, i + 1,
-			new_grid) && flood_fill(maps, j - 1, i, new_grid)
-		&& flood_fill(maps, j + 1, i, new_grid);
+	result = flood_fill_neighbors(maps, j, i, new_grid);
 	return (result);
 }
 
