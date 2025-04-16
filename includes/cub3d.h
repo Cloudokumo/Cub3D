@@ -169,6 +169,7 @@ int				skip_whitespace(t_obj_reader *reader);
 int				skip_whitespace_map(t_obj_reader *reader);
 char			*read_string(t_obj_reader *reader);
 char			*read_string_map(t_obj_reader *reader);
+int				count_commas(char *str);
 
 // texture_parsing.c
 int				parse_map_config(t_obj_reader *reader, t_map *map);
